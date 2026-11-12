@@ -10,6 +10,15 @@ Election logistics dashboard built with React, TypeScript, Vite and Tailwind CSS
 - `npm run lint` checks source code with ESLint.
 - `npm run preview` serves the production build locally.
 
+## Deployment
+
+Vercel configuration lives in `vercel.json`. It builds the app with `npm run build`,
+serves `dist`, and rewrites page requests to `index.html` so React Router can handle
+direct links and page refreshes. Deploy from the repository root so Vercel reads
+this configuration. Redeploy after changing it.
+
+Other static hosts also need an SPA fallback to `index.html` for application routes.
+
 ## Mobile layouts
 
 Navigation collapses below Tailwind's `lg` breakpoint. Phone layouts use readable text,
