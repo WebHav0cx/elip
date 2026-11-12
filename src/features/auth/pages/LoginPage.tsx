@@ -40,7 +40,7 @@ export function LoginPage() {
             Sign in to ELIP
           </h2>
           <p className={"mt-2 text-sm leading-6 text-slate-500"}>
-            Your demonstration account determines the workspace and permissions available to you.
+            Access your assigned workspace to monitor, plan, and coordinate electoral logistics operations.
           </p>
           <LoginForm />
         </div>
