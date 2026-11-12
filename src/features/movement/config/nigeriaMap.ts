@@ -3,8 +3,8 @@ import L from "leaflet";
 export const nigeriaBounds = L.latLngBounds([4.2, 2.65], [13.9, 14.7]);
 export const nigeriaNavigationBounds = nigeriaBounds.pad(0.12);
 
-// Envelopes of each zone’s states, calculated from the bundled GRID3/geoBoundaries
-// dataset in public/maps/nigeria-states.geojson. These do not depend on vehicle positions.
+// Envelopes of each zone’s states, calculated from GRID3/geoBoundaries ADM1 data.
+// See ../assets/README.md for provenance. These do not depend on vehicle positions.
 export const geopoliticalZoneBounds = {
   "North West": L.latLngBounds([9.000653, 3.475000], [13.885714, 10.605630]),
   "North East": L.latLngBounds([6.433332, 8.745074], [13.721309, 14.677968]),

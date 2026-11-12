@@ -1,15 +1,15 @@
-# Nigeria boundaries
+# Nigeria boundary data
 
-These locally served GeoJSON files contain real geographic boundaries. Vehicle positions,
+The bundled country GeoJSON contains real geographic boundaries. Vehicle positions,
 journeys and hubs in the application remain simulated.
 
 - Source: GRID3, distributed by [geoBoundaries gbOpen](https://www.geoboundaries.org/).
 - License: [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
 - Geography represented: 2022; geoBoundaries build: 12 December 2023.
 - Pinned source revision: `9469f09` of `wmgeolab/geoBoundaries`.
-- `nigeria-states.geojson`: 36 states and FCT (ADM1), boundary ID `NGA-ADM1-27671186`.
+- Zone bounds in `../config/nigeriaMap.ts` were calculated from the 36 states and FCT (ADM1), boundary ID `NGA-ADM1-27671186`. The state dataset is not needed at runtime.
 - `src/features/movement/assets/nigeria-country.geojson`: national outline (ADM0), boundary ID `NGA-ADM0-39225661`; bundled with the map so neighbouring countries are hidden immediately, without a boundary fetch.
-- Files are upstream simplified geometries, copied without further modification.
+- The country file is the upstream simplified geometry, copied without further modification.
 
 Source files:
 

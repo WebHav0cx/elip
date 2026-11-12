@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "check:styles": "node scripts/check-tailwind.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
