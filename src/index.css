@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+/* Named responsive variants preserve the existing inclusive width cutoffs. */
+@custom-variant max-overview-compact (@media (max-width: 1180px));
+@custom-variant max-intelligence-compact (@media (max-width: 1120px));
+@custom-variant max-map-compact (@media (max-width: 1050px));
+@custom-variant max-workspace-mobile (@media (max-width: 760px));
+@custom-variant max-map-mobile (@media (max-width: 700px));
+@custom-variant max-phone (@media (max-width: 620px));
+
+@theme {
+  --shadow-subtle: 0 1px 2px color-mix(in srgb,var(--color-slate-800) 3%,transparent);
+  --shadow-focus-soft: 0 0 0 3px color-mix(in srgb,var(--color-blue-600) 7%,transparent);
+  --shadow-active-nav: inset 3px 0 var(--color-blue-600);
+  --shadow-drawer: -12px 0 35px color-mix(in srgb,var(--color-slate-800) 14%,transparent);
+  --shadow-inset-border: inset 0 0 0 1px color-mix(in srgb,var(--color-white) 14%,transparent);
+  --shadow-notifications: 0 14px 32px color-mix(in srgb,var(--color-slate-900) 18%,transparent);
+  --shadow-map-pin: 0 2px 5px color-mix(in srgb,var(--color-slate-700) 20%,transparent);
+  --shadow-outline: 0 0 0 1px var(--color-slate-300);
+  --shadow-mobile-nav: 15px 0 40px color-mix(in srgb,var(--color-slate-900) 27%,transparent);
+  --shadow-active-nav-mobile: inset 3px 0 var(--color-blue-400);
+  --shadow-focus: 0 0 0 3px var(--color-blue-100);
+  --shadow-search-focus: 0 0 0 3px color-mix(in srgb,var(--color-blue-600) 5%,transparent);
+  --shadow-feed-status: 0 0 0 4px color-mix(in srgb,var(--color-emerald-700) 7%,transparent);
+  --shadow-card: 0 2px 5px color-mix(in srgb,var(--color-slate-800) 5%,transparent);
+  --shadow-map-controls: 0 2px 8px rgb(15 23 42/12%);
+  --background-image-delivery-progress: conic-gradient(var(--color-emerald-700) 0 56%, var(--color-slate-200) 56% 100%);
+  --background-image-map-grid: linear-gradient(color-mix(in srgb, var(--color-slate-200) 27%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--color-slate-200) 27%, transparent) 1px, transparent 1px);
+  --background-image-fleet-progress: conic-gradient(var(--color-emerald-500) 0 56%, var(--color-blue-500) 56% 89%, var(--color-slate-400) 89% 100%);
+  --background-image-sidebar: linear-gradient(175deg, var(--color-slate-800) 0%, var(--color-slate-900) 100%);
+  --spacing-fine-0-6: 0.15rem;
+  --spacing-fine-0-8: 0.2rem;
+  --spacing-fine-1-2: 0.3rem;
+  --spacing-fine-2-6: 0.65rem;
+  --spacing-fine-3-4: 0.85rem;
+  --spacing-fine-4-8: 1.2rem;
+  --border-width-hairline: 1.5px;
+
+  --font-sans: "Inter", sans-serif;
+  --text-tiny: 0.375rem;
+  --text-fine: 0.4375rem;
+  --text-label: 0.5rem;
+  --text-micro: 0.5625rem;
+  --text-caption: 0.625rem;
+  --text-detail: 0.6875rem;
+  --text-body-sm: 0.8125rem;
+  --text-body: 0.9375rem;
+  --text-heading-sm: 1.0625rem;
+  --text-heading: 1.1875rem;
+  --text-title: 1.375rem;
+  --text-display-sm: 1.5625rem;
+  --text-display: 1.75rem;
+  --radius-compact: 0.1875rem;
+  --radius-field: 0.3125rem;
+  --radius-control: 0.4375rem;
+  --radius-panel: 0.5625rem;
+  --radius-card: 0.625rem;
+  --radius-dialog: 0.875rem;
+  --leading-default: normal;
+  --leading-title: 1.15;
+  --leading-heading: 1.3;
+  --leading-compact: 1.35;
+  --leading-body: 1.4;
+  --leading-detail: 1.45;
+  --leading-copy: 1.6;
+  --tracking-label: 0.04em;
+  --tracking-eyebrow: 0.06em;
+  --tracking-caption: 0.07em;
+  --tracking-section: 0.08em;
+  --tracking-wide-label: 0.09em;
+  --tracking-badge: 0.12em;
+  --tracking-wide-badge: 0.13em;
+  --tracking-spaced: 0.2em;
+  --tracking-display: -0.04em;
+  --tracking-body: -0.01em;
+  --tracking-title: -0.035em;
+  --spacing-summary: min(310px, 32%);
+  --spacing-drawer: min(470px, 100%);
+  --spacing-main: calc(100% - 248px);
+  --spacing-search: min(63vw, 235px);
+  --spacing-alert-list: min(335px, 35%);
+  --spacing-notifications: min(520px, calc(100vh - 80px));
+  --spacing-workspace: calc(100vh - 66px);
+  --spacing-modal: 90vh;
+  --spacing-location-controls: calc(100% - 24px);
+  --spacing-map-controls: calc(100% - 70px);
+  --grid-template-columns-delivery-row: 25px 40px 1fr;
+  --grid-template-columns-balanced: 1.1fr 0.9fr;
+  --grid-template-columns-overview: 1.3fr 0.7fr;
+  --grid-template-columns-route-row: 59px 1fr 15px;
+  --grid-template-columns-settings: 220px 1fr;
+  --grid-template-columns-event-row: 8px 1fr auto;
+  --grid-template-columns-nav-item: 8px 1fr 14px;
+  --grid-template-columns-notification-row: 75px 1fr 38px;
+  --grid-template-columns-timeline: 33px 1fr;
+  --grid-template-columns-intelligence: 335px minmax(0,1fr);
+  --grid-template-columns-intelligence-compact: 285px minmax(0,1fr);
+  --grid-template-columns-alert-heading: auto 1fr auto auto;
+  --content-empty: "";
+  --content-separator: "•";
+
+  --animate-fade-in: fade-in 0.2s ease;
+  --animate-slide-in: slide-in 0.25s ease;
+  --animate-map-spin: map-spin 0.8s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes slide-in {
+    from { transform: translateX(35px); opacity: 0; }
+  }
+  @keyframes map-spin {
+    to { transform: rotate(360deg); }
+  }
+}
+
+/* SVG presentation utilities used by the route preview. */
+@utility stroke-linecap-round { stroke-linecap: round; }
+@utility stroke-dash-route { stroke-dasharray: 5 5; }
+@utility stroke-dash-none { stroke-dasharray: none; }
+
+@utility bg-size-map { background-size: 34px 34px; }
