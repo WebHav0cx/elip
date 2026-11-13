@@ -1,0 +1,42 @@
+simulation:
+  name: "AI4Elections Demo Operation"
+  seed: 2026
+  start_time: "2026-12-03T06:00:00+01:00"
+  duration_hours: 12
+  speed_multiplier: 60
+
+geography:
+  source_data_directory: "."
+  hubs: 3
+  destinations: 25
+  source: "synthetic_starter_data"
+
+resources:
+  vehicles: 10
+  vehicle_types:
+    bus: 4
+    truck: 3
+    motorcycle: 2
+    boat: 1
+
+deliveries:
+  count: 75
+  allow_multiple_trips: true
+  deadline_policy: "generated"
+  deadline_buffer_minutes: 60
+
+telemetry:
+  interval_seconds: 30
+  missing_update_probability: 0.05
+
+scenarios:
+  default: "normal"
+  available:
+    - normal
+    - heavy_rain
+    - road_disruption
+    - vehicle_unavailable
+
+output:
+  format: "csv"
+  directory: "datasets/generated"

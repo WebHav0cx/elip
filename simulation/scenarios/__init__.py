@@ -1,0 +1,1 @@
+"""Deterministic disruption scenario rules."""

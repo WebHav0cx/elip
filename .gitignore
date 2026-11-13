@@ -1,24 +1,59 @@
-# Logs
-logs
-*.log
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+.venv/
+venv/
+env/
+ENV/
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Environment and secrets
+.env
+.env.*
+!.env.example
 
-# Editor directories and files
-.vscode/*
+# Editors and OS files
+.vscode/
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Local infrastructure data
+postgres-data/
+simulation/datasets/generated/
+simulation/datasets/ml/
+simulation/datasets/batch/
+simulation/datasets/ml_batch/
+ml/artifacts/*
+!ml/artifacts/.gitkeep
+simulation/datasets/generated/id-map.json
+
+# Build and test output
+coverage.xml
+*.log
+
+# Docker overrides
+docker-compose.override.yml
