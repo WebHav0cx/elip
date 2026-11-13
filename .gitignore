@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+.venv/
+venv/
+env/
+ENV/
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Editors and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local infrastructure data
+postgres-data/
+simulation/datasets/generated/
+simulation/datasets/ml/
+simulation/datasets/batch/
+simulation/datasets/ml_batch/
+ml/artifacts/*
+!ml/artifacts/.gitkeep
+simulation/datasets/generated/id-map.json
+
+# Build and test output
+dist/
+build/
+coverage.xml
+*.log
+
+# Docker overrides
+docker-compose.override.yml

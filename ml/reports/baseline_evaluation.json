@@ -1,0 +1,144 @@
+{
+  "model": "ETA baseline",
+  "fixed_speed_kmh": 30.0,
+  "contextual_speed_groups": {
+    "bus|urban": 16.30188679245283,
+    "truck|rural": 10.355871886120996,
+    "truck|urban": 10.8,
+    "motorcycle|rural": 12.7672131147541,
+    "boat|urban": 11.763157894736842,
+    "bus|rural": 12.32608695652174,
+    "motorcycle|urban": 22.385714285714286,
+    "boat|rural": 11.1139896373057
+  },
+  "splits": {
+    "development": {
+      "naive": {
+        "count": 600,
+        "mae_minutes": 62.1475,
+        "rmse_minutes": 87.42235275946307,
+        "median_absolute_error_minutes": 45.08
+      },
+      "contextual": {
+        "count": 600,
+        "mae_minutes": 30.799834593752742,
+        "rmse_minutes": 51.43206196933693,
+        "median_absolute_error_minutes": 15.364583333333329
+      },
+      "delivery_level_risk": {
+        "naive": {
+          "count": 75,
+          "positive_count": 0,
+          "has_both_classes": false,
+          "precision": 0.0,
+          "recall": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "contextual": {
+          "count": 75,
+          "positive_count": 0,
+          "has_both_classes": false,
+          "precision": 0.0,
+          "recall": 0.0,
+          "false_negative_rate": 0.0
+        }
+      }
+    },
+    "validation": {
+      "naive": {
+        "count": 300,
+        "mae_minutes": 52.894999999999996,
+        "rmse_minutes": 68.67441803175328,
+        "median_absolute_error_minutes": 40.12
+      },
+      "contextual": {
+        "count": 300,
+        "mae_minutes": 36.89177116936892,
+        "rmse_minutes": 53.06581480790807,
+        "median_absolute_error_minutes": 21.110880663688576
+      },
+      "delivery_level_risk": {
+        "naive": {
+          "count": 75,
+          "positive_count": 0,
+          "has_both_classes": false,
+          "precision": 0.0,
+          "recall": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "contextual": {
+          "count": 75,
+          "positive_count": 0,
+          "has_both_classes": false,
+          "precision": 0.0,
+          "recall": 0.0,
+          "false_negative_rate": 0.0
+        }
+      }
+    },
+    "test": {
+      "naive": {
+        "count": 300,
+        "mae_minutes": 68.179,
+        "rmse_minutes": 95.57881558169676,
+        "median_absolute_error_minutes": 48.849999999999994
+      },
+      "contextual": {
+        "count": 300,
+        "mae_minutes": 42.12127842584385,
+        "rmse_minutes": 59.09984607288606,
+        "median_absolute_error_minutes": 29.05082671957672
+      },
+      "delivery_level_risk": {
+        "naive": {
+          "count": 75,
+          "positive_count": 3,
+          "has_both_classes": true,
+          "precision": 0.0,
+          "recall": 0.0,
+          "false_negative_rate": 1.0
+        },
+        "contextual": {
+          "count": 75,
+          "positive_count": 3,
+          "has_both_classes": true,
+          "precision": 0.14285714285714285,
+          "recall": 1.0,
+          "false_negative_rate": 0.0
+        }
+      }
+    },
+    "held_out_disruption": {
+      "naive": {
+        "count": 600,
+        "mae_minutes": 68.77833333333334,
+        "rmse_minutes": 90.14772312155199,
+        "median_absolute_error_minutes": 52.7
+      },
+      "contextual": {
+        "count": 600,
+        "mae_minutes": 37.72894455552368,
+        "rmse_minutes": 54.56762248197057,
+        "median_absolute_error_minutes": 25.331900167785236
+      },
+      "delivery_level_risk": {
+        "naive": {
+          "count": 75,
+          "positive_count": 37,
+          "has_both_classes": true,
+          "precision": 0.0,
+          "recall": 0.0,
+          "false_negative_rate": 1.0
+        },
+        "contextual": {
+          "count": 75,
+          "positive_count": 37,
+          "has_both_classes": true,
+          "precision": 0.5238095238095238,
+          "recall": 0.2972972972972973,
+          "false_negative_rate": 0.7027027027027027
+        }
+      }
+    }
+  }
+}

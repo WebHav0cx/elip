@@ -1,0 +1,188 @@
+{
+  "models": {
+    "linear_regression": {
+      "artifact": "C:\\Users\\smart\\Documents\\Vergold\\Election Hackathon\\ml\\artifacts\\linear_regression.joblib",
+      "splits": {
+        "development": {
+          "count": 600,
+          "mae_minutes": 0.1256707482197008,
+          "rmse_minutes": 0.3140232542020871,
+          "median_absolute_error_minutes": 0.028791323956102843
+        },
+        "held_out_disruption": {
+          "count": 600,
+          "mae_minutes": 8.40190196915301,
+          "rmse_minutes": 16.182855188886492,
+          "median_absolute_error_minutes": 0.051937351356365014
+        },
+        "test": {
+          "count": 300,
+          "mae_minutes": 1.9139760350844521,
+          "rmse_minutes": 8.979059543432784,
+          "median_absolute_error_minutes": 0.030426808625739987
+        },
+        "validation": {
+          "count": 300,
+          "mae_minutes": 0.1529032215141884,
+          "rmse_minutes": 0.3529386110956709,
+          "median_absolute_error_minutes": 0.03820298226708374
+        }
+      },
+      "scenarios": {
+        "heavy_rain": {
+          "count": 300,
+          "mae_minutes": 14.8387356310971,
+          "rmse_minutes": 21.046941809254335,
+          "median_absolute_error_minutes": 1.0372302313838873
+        },
+        "normal": {
+          "count": 900,
+          "mae_minutes": 0.13474823931786334,
+          "rmse_minutes": 0.32750922203885013,
+          "median_absolute_error_minutes": 0.031162273276677865
+        },
+        "road_disruption": {
+          "count": 600,
+          "mae_minutes": 1.939522171146685,
+          "rmse_minutes": 8.983856490709154,
+          "median_absolute_error_minutes": 0.03228998561948515
+        }
+      },
+      "progress_stages": {
+        "0": {
+          "count": 450,
+          "mae_minutes": 3.0972679473875284,
+          "rmse_minutes": 10.035092950839813,
+          "median_absolute_error_minutes": 0.034939302716011866
+        },
+        "25": {
+          "count": 450,
+          "mae_minutes": 3.0934338207045595,
+          "rmse_minutes": 10.035408295316376,
+          "median_absolute_error_minutes": 0.03184779239527913
+        },
+        "50": {
+          "count": 450,
+          "mae_minutes": 3.4696256354638537,
+          "rmse_minutes": 10.050290077146121,
+          "median_absolute_error_minutes": 0.09325511396438912
+        },
+        "75": {
+          "count": 450,
+          "mae_minutes": 3.0876890573401,
+          "rmse_minutes": 10.036056332188506,
+          "median_absolute_error_minutes": 0.02683861951884481
+        }
+      },
+      "delay_risk": {
+        "delivery_count": 450,
+        "late_delivery_count": 43,
+        "has_both_classes": true,
+        "precision": 0.0,
+        "recall": 0.0,
+        "false_negative_rate": 1.0
+      }
+    },
+    "random_forest": {
+      "artifact": "C:\\Users\\smart\\Documents\\Vergold\\Election Hackathon\\ml\\artifacts\\random_forest.joblib",
+      "splits": {
+        "development": {
+          "count": 600,
+          "mae_minutes": 0.8496782145863386,
+          "rmse_minutes": 1.916212607611931,
+          "median_absolute_error_minutes": 0.25373214285713175
+        },
+        "held_out_disruption": {
+          "count": 600,
+          "mae_minutes": 10.142356238275616,
+          "rmse_minutes": 18.20965426583436,
+          "median_absolute_error_minutes": 4.217958333333328
+        },
+        "test": {
+          "count": 300,
+          "mae_minutes": 10.706548561808562,
+          "rmse_minutes": 26.311239728650527,
+          "median_absolute_error_minutes": 1.8056666666666672
+        },
+        "validation": {
+          "count": 300,
+          "mae_minutes": 8.322757582972582,
+          "rmse_minutes": 15.826479250754094,
+          "median_absolute_error_minutes": 2.3374682539682468
+        }
+      },
+      "scenarios": {
+        "heavy_rain": {
+          "count": 300,
+          "mae_minutes": 13.54881706589707,
+          "rmse_minutes": 21.697155238543612,
+          "median_absolute_error_minutes": 7.624551587301596
+        },
+        "normal": {
+          "count": 900,
+          "mae_minutes": 3.3407046707150863,
+          "rmse_minutes": 9.27040428801412,
+          "median_absolute_error_minutes": 0.431111111111111
+        },
+        "road_disruption": {
+          "count": 600,
+          "mae_minutes": 8.721221986231361,
+          "rmse_minutes": 21.032092235147417,
+          "median_absolute_error_minutes": 2.108642857142854
+        }
+      },
+      "progress_stages": {
+        "0": {
+          "count": 450,
+          "mae_minutes": 12.525416582892415,
+          "rmse_minutes": 25.308718724297087,
+          "median_absolute_error_minutes": 2.601446428571432
+        },
+        "25": {
+          "count": 450,
+          "mae_minutes": 7.966851807760142,
+          "rmse_minutes": 15.621545963337358,
+          "median_absolute_error_minutes": 2.2045892857142917
+        },
+        "50": {
+          "count": 450,
+          "mae_minutes": 4.959655535914703,
+          "rmse_minutes": 12.692639978269659,
+          "median_absolute_error_minutes": 0.9199999999999999
+        },
+        "75": {
+          "count": 450,
+          "mae_minutes": 1.8903261071027733,
+          "rmse_minutes": 5.4641231659082825,
+          "median_absolute_error_minutes": 0.3569146825396885
+        }
+      },
+      "delay_risk": {
+        "delivery_count": 450,
+        "late_delivery_count": 43,
+        "has_both_classes": true,
+        "precision": 0.3,
+        "recall": 0.20930232558139536,
+        "false_negative_rate": 0.7906976744186046
+      }
+    }
+  },
+  "leakage_checks": {
+    "feature_names": [
+      "remaining_distance_km",
+      "elapsed_minutes",
+      "journey_progress_pct",
+      "planned_duration_min",
+      "dispatch_hour",
+      "last_update_age_min",
+      "vehicle_type",
+      "settlement_type",
+      "weather_condition",
+      "disruption_reported"
+    ],
+    "leakage_fields_detected": [],
+    "contract_features_missing": [],
+    "passed": true
+  },
+  "evaluation_rows": 1800
+}

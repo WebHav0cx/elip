@@ -1,0 +1,78 @@
+{
+  "created_at": "2026-11-12T09:53:00.373230+00:00",
+  "training_split": "development",
+  "training_rows": 600,
+  "feature_names": [
+    "remaining_distance_km",
+    "elapsed_minutes",
+    "journey_progress_pct",
+    "planned_duration_min",
+    "dispatch_hour",
+    "last_update_age_min",
+    "vehicle_type",
+    "settlement_type",
+    "weather_condition",
+    "disruption_reported"
+  ],
+  "target_name": "remaining_time_min",
+  "models": {
+    "linear_regression": {
+      "artifact": "C:\\Users\\smart\\Documents\\Vergold\\Election Hackathon\\ml\\artifacts\\linear_regression.joblib",
+      "splits": {
+        "development": {
+          "count": 600,
+          "mae_minutes": 0.1256707482197008,
+          "rmse_minutes": 0.3140232542020871,
+          "median_absolute_error_minutes": 0.028791323956102843
+        },
+        "held_out_disruption": {
+          "count": 600,
+          "mae_minutes": 8.40190196915301,
+          "rmse_minutes": 16.182855188886492,
+          "median_absolute_error_minutes": 0.051937351356365014
+        },
+        "test": {
+          "count": 300,
+          "mae_minutes": 1.9139760350844521,
+          "rmse_minutes": 8.979059543432784,
+          "median_absolute_error_minutes": 0.030426808625739987
+        },
+        "validation": {
+          "count": 300,
+          "mae_minutes": 0.1529032215141884,
+          "rmse_minutes": 0.3529386110956709,
+          "median_absolute_error_minutes": 0.03820298226708374
+        }
+      }
+    },
+    "random_forest": {
+      "artifact": "C:\\Users\\smart\\Documents\\Vergold\\Election Hackathon\\ml\\artifacts\\random_forest.joblib",
+      "splits": {
+        "development": {
+          "count": 600,
+          "mae_minutes": 0.8496782145863386,
+          "rmse_minutes": 1.9162126076119312,
+          "median_absolute_error_minutes": 0.25373214285713175
+        },
+        "held_out_disruption": {
+          "count": 600,
+          "mae_minutes": 10.142356238275617,
+          "rmse_minutes": 18.20965426583436,
+          "median_absolute_error_minutes": 4.217958333333328
+        },
+        "test": {
+          "count": 300,
+          "mae_minutes": 10.706548561808564,
+          "rmse_minutes": 26.311239728650534,
+          "median_absolute_error_minutes": 1.8056666666666672
+        },
+        "validation": {
+          "count": 300,
+          "mae_minutes": 8.322757582972582,
+          "rmse_minutes": 15.826479250754094,
+          "median_absolute_error_minutes": 2.3374682539682468
+        }
+      }
+    }
+  }
+}
