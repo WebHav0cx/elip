@@ -46,7 +46,12 @@ type AlertRecord = {
   occurrences: number;
   fact: string;
   action: string;
-  prediction?: { deadline: string; arrival: string; lateness: number; generated: string };
+  prediction?: {
+    deadline: string;
+    arrival: string;
+    lateness: number;
+    generated: string;
+  };
   disruption?: { validUntil: string; affected: number; verification: string };
 };
 
@@ -86,7 +91,12 @@ const initialAlerts: AlertRecord[] = [
     occurrences: 3,
     fact: "Delivery was dispatched at 07:30 WAT. Last telemetry was received at 09:30 WAT.",
     action: "Review the journey and assess whether a response is required.",
-    prediction: { deadline: "10:30", arrival: "10:58", lateness: 28, generated: "09:26" },
+    prediction: {
+      deadline: "10:30",
+      arrival: "10:58",
+      lateness: 28,
+      generated: "09:26",
+    },
   },
   {
     id: "ALT-1029",
@@ -104,7 +114,8 @@ const initialAlerts: AlertRecord[] = [
     updated: "09:29",
     occurrences: 1,
     fact: "Last recorded position event was received at 09:08 WAT, 24 minutes ago.",
-    action: "Check communications status before relying on the displayed position.",
+    action:
+      "Check communications status before relying on the displayed position.",
   },
   {
     id: "ALT-1033",
@@ -121,8 +132,13 @@ const initialAlerts: AlertRecord[] = [
     updated: "09:24",
     occurrences: 2,
     fact: "A rainfall advisory was recorded for the Oyo operation corridor.",
-    action: "Review affected delivery estimates. Do not infer delay without evidence.",
-    disruption: { validUntil: "11:30", affected: 4, verification: "Verified operation event" },
+    action:
+      "Review affected delivery estimates. Do not infer delay without evidence.",
+    disruption: {
+      validUntil: "11:30",
+      affected: 4,
+      verification: "Verified operation event",
+    },
   },
   {
     id: "ALT-1038",
@@ -158,7 +174,11 @@ const initialAlerts: AlertRecord[] = [
     occurrences: 1,
     fact: "A closure event was recorded on a corridor.",
     action: "No further action unless a delivery becomes associated.",
-    disruption: { validUntil: "12:00", affected: 0, verification: "Verified operation event" },
+    disruption: {
+      validUntil: "12:00",
+      affected: 0,
+      verification: "Verified operation event",
+    },
   },
 ];
 
@@ -176,7 +196,13 @@ type IconType =
   | "telemetry"
   | "trend";
 
-function IntelligenceIcon({ type }: { type: IconType }) {
+function IntelligenceIcon({
+  type,
+  className,
+}: {
+  type: IconType;
+  className?: string;
+}) {
   const icons: Record<IconType, LucideIcon> = {
     alert: AlertTriangle,
     check: Check,
@@ -192,7 +218,9 @@ function IntelligenceIcon({ type }: { type: IconType }) {
     trend: TrendingUp,
   };
   const Component = icons[type];
-  return <Component aria-hidden="true" strokeWidth={1.8} />;
+  return (
+    <Component className={className} aria-hidden="true" strokeWidth={1.8} />
+  );
 }
 
 const typeIcons: Record<AlertType, IconType> = {
@@ -223,7 +251,8 @@ export default function Intelligence() {
           `${alert.id} ${alert.entity} ${alert.vehicle ?? ""} ${alert.title} ${alert.state}`
             .toLowerCase()
             .includes(query.toLowerCase());
-        const matchesSeverity = severity === "All severities" || alert.severity === severity;
+        const matchesSeverity =
+          severity === "All severities" || alert.severity === severity;
         const matchesType = type === "All types" || alert.type === type;
         const matchesStatus =
           reviewStatus === "All statuses" ||
@@ -235,179 +264,167 @@ export default function Intelligence() {
     [alerts, query, reviewStatus, severity, type],
   );
 
-  const selected = alerts.find((alert) => alert.id === selectedId) ?? visibleAlerts[0];
-  const openCount = alerts.filter((alert) => alert.status !== "Resolved").length;
+  const selected =
+    alerts.find((alert) => alert.id === selectedId) ?? visibleAlerts[0];
+  const openCount = alerts.filter(
+    (alert) => alert.status !== "Resolved",
+  ).length;
 
   function updateSelected(status: ReviewStatus) {
     if (!selected) return;
     setAlerts((current) =>
       current.map((alert) =>
-        alert.id === selected.id ? { ...alert, status, updated: "09:36" } : alert,
+        alert.id === selected.id
+          ? { ...alert, status, updated: "09:36" }
+          : alert,
       ),
     );
   }
 
   return (
-    <div className={`
-  min-h-workspace! pt-6.5! pr-7.5! pb-4.5! pl-7.5!
-  max-workspace-mobile:pt-5.5! max-workspace-mobile:pr-3.5! max-workspace-mobile:pb-4! max-workspace-mobile:pl-3.5!
-`}>
-      <div className={`
-  mb-4.75! flex! items-end! justify-between! [&_h1]:mt-1.75!
-  [&_>_div:first-child_>_p]:mt-1! [&_>_div:first-child_>_p]:mr-0! [&_>_div:first-child_>_p]:mb-0!
-  [&_>_div:first-child_>_p]:ml-0! [&_>_div:first-child_>_p]:text-slate-500!
-  [&_>_div:first-child_>_p]:text-detail! max-lg:[&_>_div:first-child_>_p]:text-xs! max-workspace-mobile:items-start! max-workspace-mobile:flex-col!
-  max-workspace-mobile:gap-y-3.25! max-workspace-mobile:gap-x-3.25!
-`}>
+    <div className="min-h-dvh pt-6.5 pb-4.5 max-md:pt-5.5 max-md:pb-4 px-7.5 max-md:px-3.5">
+      <div className="mb-4.75 flex items-end justify-between max-md:items-start max-md:flex-col max-md:gap-3.25">
         <div>
-          <div className={`
-  flex! items-center! gap-y-1.75! gap-x-1.75! text-slate-400! text-label! max-lg:text-xs! font-bold!
-  tracking-section! [&_span]:text-slate-500! [&_i]:w-0.75! [&_i]:h-0.75! [&_i]:rounded-full!
-  [&_i]:bg-slate-400!
-`}>
-            <span>OPERATIONS</span>
-            <i />
+          <div className="flex items-center text-slate-400 text-xs max-lg:text-xs font-bold tracking-wide gap-1.75">
+            <span className="text-slate-500">OPERATIONS</span>
+            <i className="w-0.75 h-0.75 rounded-full bg-slate-400" />
             INTELLIGENCE REVIEW · NIGERIA
           </div>
-          <h1>Intelligence & alerts</h1>
-          <p>Review operational risks, recorded evidence and AI-assisted predictions.</p>
+          <h1 className="mt-1.75 mb-1 text-3xl font-bold tracking-tight">
+            Intelligence & alerts
+          </h1>
+          <p className="mt-1 mb-0 text-slate-500 text-xs max-lg:text-xs mx-0">
+            Review operational risks, recorded evidence and AI-assisted
+            predictions.
+          </p>
         </div>
       </div>
 
-      <section className={`
-  min-h-18.25! mb-3! pt-2! pr-3.75! pb-2! pl-3.75! grid!
-  grid-cols-5! rounded-lg! bg-white! border! border-solid! border-slate-200!
-  [&_>_div]:min-w-0! [&_>_div]:pt-0! [&_>_div]:pr-4! [&_>_div]:pb-0! [&_>_div]:pl-4! [&_>_div]:grid!
-  [&_>_div]:grid-cols-timeline! [&_>_div]:grid-rows-2!
-  [&_>_div]:items-center! [&_>_div]:gap-x-2.5! [&_>_div]:border-r!
-  [&_>_div]:border-solid! [&_>_div]:border-r-slate-200!
-  [&_>_div:last-child]:border-0! 
-  [&_>_div:last-child]:border-current! [&_p]:mt-1.75! [&_p]:mr-0! [&_p]:mb-0! [&_p]:ml-0!
-  [&_p]:self-end! [&_p_strong]:inline! [&_p_strong]:mr-1.25! [&_p_strong]:text-slate-700!
-  [&_p_strong]:font-bold! [&_p_strong]:text-base! [&_p_strong]:leading-default!
-  [&_p_strong]:font-sans! [&_p_strong]:not-italic! [&_p_span]:inline! [&_p_span]:text-slate-500!
-  [&_p_span]:text-label! max-lg:[&_p_span]:text-xs! [&_p_span]:font-semibold! [&_small]:self-start! [&_small]:text-slate-400!
-  [&_small]:text-fine! max-lg:[&_small]:text-xs! max-intelligence-compact:grid-cols-3! max-intelligence-compact:gap-y-2.5!
-  max-intelligence-compact:pt-3! max-intelligence-compact:pb-3! max-intelligence-compact:[&_>_div:nth-child(3)]:border-0!
-  
-  max-intelligence-compact:[&_>_div:nth-child(3)]:border-current!
-  max-workspace-mobile:grid-cols-2! max-workspace-mobile:[&_>_div]:pt-1.25! max-workspace-mobile:[&_>_div]:pr-2!
-  max-workspace-mobile:[&_>_div]:pb-1.25! max-workspace-mobile:[&_>_div]:pl-2! max-workspace-mobile:[&_>_div:nth-child(2)]:border-0!
-  
-  max-workspace-mobile:[&_>_div:nth-child(2)]:border-current!
-  max-workspace-mobile:[&_>_div:nth-child(4)]:border-0! 
-  max-workspace-mobile:[&_>_div:nth-child(4)]:border-current!
-  max-workspace-mobile:[&_>_div:last-child]:col-span-full!
-`}>
-        <div>
-          <span className={`
-  w-8.25! h-8.25! row-span-2! grid! place-items-center! rounded-control!
-  [&_svg]:w-4.25! [&_svg]:h-4.25! data-[state~=red]:text-red-600! data-[state~=red]:bg-red-50! data-[state~=amber]:text-amber-700!
-  data-[state~=amber]:bg-amber-100! data-[state~=purple]:text-slate-500! data-[state~=purple]:bg-slate-100! data-[state~=slate]:text-slate-500!
-  data-[state~=slate]:bg-slate-100! data-[state~=blue]:text-blue-600! data-[state~=blue]:bg-blue-50!
-`} data-state="red">
-            <IntelligenceIcon type="clock" />
+      <section className="min-h-18.25 mb-3 grid grid-cols-5 rounded-lg bg-white border border-slate-200 max-xl:grid-cols-3 max-xl:gap-y-2.5 max-md:grid-cols-2 py-2 max-xl:py-3 px-3.75">
+        <div className="min-w-0 grid grid-cols-2 grid-rows-2 items-center gap-x-2.5 border-r border-r-slate-200 py-0 max-md:py-1.25 px-4 max-md:px-2">
+          <span
+            className="w-8.25 h-8.25 row-span-2 grid place-items-center rounded-lg text-red-600 bg-red-50"
+            data-state="red"
+          >
+            <IntelligenceIcon className="w-4.25 h-4.25" type="clock" />
           </span>
-          <p>
-            <strong>4</strong>
-            <span>Overdue</span>
+          <p className="mt-1.75 mb-0 self-end mx-0">
+            <strong className="inline mr-1.25 text-slate-700 font-bold text-base leading-normal font-sans not-italic">
+              4
+            </strong>
+            <span className="inline text-slate-500 text-xs max-lg:text-xs font-semibold">
+              Overdue
+            </span>
           </p>
-          <small>Recorded fact</small>
+          <small className="self-start text-slate-400 text-xs max-lg:text-xs">
+            Recorded fact
+          </small>
         </div>
-        <div>
-          <span className={`
-  w-8.25! h-8.25! row-span-2! grid! place-items-center! rounded-control!
-  [&_svg]:w-4.25! [&_svg]:h-4.25! data-[state~=red]:text-red-600! data-[state~=red]:bg-red-50! data-[state~=amber]:text-amber-700!
-  data-[state~=amber]:bg-amber-100! data-[state~=purple]:text-slate-500! data-[state~=purple]:bg-slate-100! data-[state~=slate]:text-slate-500!
-  data-[state~=slate]:bg-slate-100! data-[state~=blue]:text-blue-600! data-[state~=blue]:bg-blue-50!
-`} data-state="amber">
-            <IntelligenceIcon type="trend" />
+        <div className="min-w-0 grid grid-cols-2 grid-rows-2 items-center gap-x-2.5 border-r border-r-slate-200 max-md:border-0 py-0 max-md:py-1.25 px-4 max-md:px-2">
+          <span
+            className="w-8.25 h-8.25 row-span-2 grid place-items-center rounded-lg text-amber-700 bg-amber-100"
+            data-state="amber"
+          >
+            <IntelligenceIcon className="w-4.25 h-4.25" type="trend" />
           </span>
-          <p>
-            <strong>6</strong>
-            <span>At risk</span>
+          <p className="mt-1.75 mb-0 self-end mx-0">
+            <strong className="inline mr-1.25 text-slate-700 font-bold text-base leading-normal font-sans not-italic">
+              6
+            </strong>
+            <span className="inline text-slate-500 text-xs max-lg:text-xs font-semibold">
+              At risk
+            </span>
           </p>
-          <small>Model prediction</small>
+          <small className="self-start text-slate-400 text-xs max-lg:text-xs">
+            Model prediction
+          </small>
         </div>
-        <div>
-          <span className={`
-  w-8.25! h-8.25! row-span-2! grid! place-items-center! rounded-control!
-  [&_svg]:w-4.25! [&_svg]:h-4.25! data-[state~=red]:text-red-600! data-[state~=red]:bg-red-50! data-[state~=amber]:text-amber-700!
-  data-[state~=amber]:bg-amber-100! data-[state~=purple]:text-slate-500! data-[state~=purple]:bg-slate-100! data-[state~=slate]:text-slate-500!
-  data-[state~=slate]:bg-slate-100! data-[state~=blue]:text-blue-600! data-[state~=blue]:bg-blue-50!
-`} data-state="purple">
-            <IntelligenceIcon type="cloud" />
+        <div className="min-w-0 grid grid-cols-2 grid-rows-2 items-center gap-x-2.5 border-r border-r-slate-200 max-xl:border-0 py-0 max-md:py-1.25 px-4 max-md:px-2">
+          <span
+            className="w-8.25 h-8.25 row-span-2 grid place-items-center rounded-lg text-slate-500 bg-slate-100"
+            data-state="purple"
+          >
+            <IntelligenceIcon className="w-4.25 h-4.25" type="cloud" />
           </span>
-          <p>
-            <strong>2</strong>
-            <span>Disruptions</span>
+          <p className="mt-1.75 mb-0 self-end mx-0">
+            <strong className="inline mr-1.25 text-slate-700 font-bold text-base leading-normal font-sans not-italic">
+              2
+            </strong>
+            <span className="inline text-slate-500 text-xs max-lg:text-xs font-semibold">
+              Disruptions
+            </span>
           </p>
-          <small>Verified operation</small>
+          <small className="self-start text-slate-400 text-xs max-lg:text-xs">
+            Verified operation
+          </small>
         </div>
-        <div>
-          <span className={`
-  w-8.25! h-8.25! row-span-2! grid! place-items-center! rounded-control!
-  [&_svg]:w-4.25! [&_svg]:h-4.25! data-[state~=red]:text-red-600! data-[state~=red]:bg-red-50! data-[state~=amber]:text-amber-700!
-  data-[state~=amber]:bg-amber-100! data-[state~=purple]:text-slate-500! data-[state~=purple]:bg-slate-100! data-[state~=slate]:text-slate-500!
-  data-[state~=slate]:bg-slate-100! data-[state~=blue]:text-blue-600! data-[state~=blue]:bg-blue-50!
-`} data-state="slate">
-            <IntelligenceIcon type="telemetry" />
+        <div className="min-w-0 grid grid-cols-2 grid-rows-2 items-center gap-x-2.5 border-r border-r-slate-200 max-md:border-0 py-0 max-md:py-1.25 px-4 max-md:px-2">
+          <span
+            className="w-8.25 h-8.25 row-span-2 grid place-items-center rounded-lg text-slate-500 bg-slate-100"
+            data-state="slate"
+          >
+            <IntelligenceIcon className="w-4.25 h-4.25" type="telemetry" />
           </span>
-          <p>
-            <strong>1</strong>
-            <span>Stale telemetry</span>
+          <p className="mt-1.75 mb-0 self-end mx-0">
+            <strong className="inline mr-1.25 text-slate-700 font-bold text-base leading-normal font-sans not-italic">
+              1
+            </strong>
+            <span className="inline text-slate-500 text-xs max-lg:text-xs font-semibold">
+              Stale telemetry
+            </span>
           </p>
-          <small>Data quality</small>
+          <small className="self-start text-slate-400 text-xs max-lg:text-xs">
+            Data quality
+          </small>
         </div>
-        <div>
-          <span className={`
-  w-8.25! h-8.25! row-span-2! grid! place-items-center! rounded-control!
-  [&_svg]:w-4.25! [&_svg]:h-4.25! data-[state~=red]:text-red-600! data-[state~=red]:bg-red-50! data-[state~=amber]:text-amber-700!
-  data-[state~=amber]:bg-amber-100! data-[state~=purple]:text-slate-500! data-[state~=purple]:bg-slate-100! data-[state~=slate]:text-slate-500!
-  data-[state~=slate]:bg-slate-100! data-[state~=blue]:text-blue-600! data-[state~=blue]:bg-blue-50!
-`} data-state="blue">
-            <IntelligenceIcon type="alert" />
+        <div className="min-w-0 grid grid-cols-2 grid-rows-2 items-center gap-x-2.5 border-r border-r-slate-200 border-0 max-md:col-span-full py-0 max-md:py-1.25 px-4 max-md:px-2">
+          <span
+            className="w-8.25 h-8.25 row-span-2 grid place-items-center rounded-lg text-blue-600 bg-blue-50"
+            data-state="blue"
+          >
+            <IntelligenceIcon className="w-4.25 h-4.25" type="alert" />
           </span>
-          <p>
-            <strong>{openCount}</strong>
-            <span>Open alerts</span>
+          <p className="mt-1.75 mb-0 self-end mx-0">
+            <strong className="inline mr-1.25 text-slate-700 font-bold text-base leading-normal font-sans not-italic">
+              {openCount}
+            </strong>
+            <span className="inline text-slate-500 text-xs max-lg:text-xs font-semibold">
+              Open alerts
+            </span>
           </p>
-          <small>Needs review</small>
+          <small className="self-start text-slate-400 text-xs max-lg:text-xs">
+            Needs review
+          </small>
         </div>
       </section>
 
-      <section className={`
-  overflow-x-hidden! overflow-y-hidden! rounded-panel! bg-white!
-  shadow-card! border! border-solid!
-  border-slate-200!
-`}>
-        <div className={`
-  min-h-14.25! pt-2.25! pr-3! pb-2.25! pl-3! flex! items-center! gap-y-1.75! gap-x-1.75!
-  border-b! border-solid! border-b-slate-200!
-  [&_>_label]:h-8.75! [&_>_label]:pt-0! [&_>_label]:pr-2! [&_>_label]:pb-0! [&_>_label]:pl-2!
-  [&_>_label]:flex! [&_>_label]:items-center! [&_>_label]:gap-y-1.25! [&_>_label]:gap-x-1.25!
-  [&_>_label]:rounded-md! [&_>_label]:bg-white! [&_>_label]:border! [&_>_label]:border-solid!
-  [&_>_label]:border-slate-300! [&_svg]:w-3.5! [&_svg]:h-3.5! [&_svg]:text-slate-500!
-  [&_select]:outline-none! [&_select]:text-slate-600! [&_select]:bg-transparent! [&_select]:text-label! max-lg:[&_select]:text-base!
-  [&_select]:font-semibold! [&_select]:border-0! 
-  [&_select]:border-current! **:data-[slot~=intel-search]:w-alert-list! **:data-[slot~=intel-search]:mr-auto!
-  **:data-[slot~=intel-search]:bg-slate-50! max-intelligence-compact:flex-wrap! max-intelligence-compact:**:data-[slot~=intel-search]:w-full!
-  max-workspace-mobile:[&_>_label:not([data-slot~=intel-search])]:flex-1! max-sm:flex-col! max-sm:items-stretch! max-sm:[&_label]:w-full!
-`}>
-          <label className={`
-  [&_input]:w-full! [&_input]:outline-none! [&_input]:text-slate-700! [&_input]:bg-transparent!
-  [&_input]:text-micro! max-lg:[&_input]:text-base! [&_input]:border-0!  [&_input]:border-current!
-`} data-slot="intel-search">
-            <IntelligenceIcon type="search" />
+      <section className="rounded-lg bg-white shadow-sm border border-slate-200 overflow-hidden">
+        <div className="min-h-14.25 flex items-center border-b border-b-slate-200 max-xl:flex-wrap max-sm:flex-col max-sm:items-stretch gap-1.75 py-2.25 px-3">
+          <label
+            className="h-8.75 flex items-center rounded-md bg-slate-50 border border-slate-300 max-sm:w-full gap-1.25 py-0 px-2 w-80 max-w-full mr-auto max-xl:w-full"
+            data-slot="intel-search"
+          >
+            <IntelligenceIcon
+              className="w-3.5 h-3.5 text-slate-500"
+              type="search"
+            />
             <input
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 w-full outline-none text-slate-700 bg-transparent text-xs border-0"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search alert, delivery, vehicle or state"
             />
           </label>
-          <label>
-            <IntelligenceIcon type="filter" />
-            <select value={severity} onChange={(event) => setSeverity(event.target.value)}>
+          <label className="h-8.75 flex items-center rounded-md bg-white border border-slate-300 max-sm:w-full gap-1.25 py-0 px-2">
+            <IntelligenceIcon
+              className="w-3.5 h-3.5 text-slate-500"
+              type="filter"
+            />
+            <select
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 outline-none text-slate-600 bg-transparent text-xs font-semibold border-0"
+              value={severity}
+              onChange={(event) => setSeverity(event.target.value)}
+            >
               <option>All severities</option>
               <option>Critical</option>
               <option>High</option>
@@ -415,8 +432,12 @@ export default function Intelligence() {
               <option>Low</option>
             </select>
           </label>
-          <label>
-            <select value={type} onChange={(event) => setType(event.target.value)}>
+          <label className="h-8.75 flex items-center rounded-md bg-white border border-slate-300 max-sm:w-full gap-1.25 py-0 px-2">
+            <select
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 outline-none text-slate-600 bg-transparent text-xs font-semibold border-0"
+              value={type}
+              onChange={(event) => setType(event.target.value)}
+            >
               <option>All types</option>
               <option>Overdue</option>
               <option>Delivery risk</option>
@@ -426,8 +447,12 @@ export default function Intelligence() {
               <option>Resource conflict</option>
             </select>
           </label>
-          <label>
-            <select value={reviewStatus} onChange={(event) => setReviewStatus(event.target.value)}>
+          <label className="h-8.75 flex items-center rounded-md bg-white border border-slate-300 max-sm:w-full gap-1.25 py-0 px-2">
+            <select
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 outline-none text-slate-600 bg-transparent text-xs font-semibold border-0"
+              value={reviewStatus}
+              onChange={(event) => setReviewStatus(event.target.value)}
+            >
               <option>Open alerts</option>
               <option>All statuses</option>
               <option>New</option>
@@ -438,32 +463,22 @@ export default function Intelligence() {
           </label>
         </div>
 
-        <div className={"min-h-167.5! grid! grid-cols-intelligence! max-intelligence-compact:grid-cols-intelligence-compact! max-workspace-mobile:block!"}>
-          <aside className={`
-  min-w-0! border-r! border-solid!
-  border-r-slate-200! bg-slate-50! max-workspace-mobile:max-h-97.5!
-  max-workspace-mobile:overflow-x-auto! max-workspace-mobile:overflow-y-auto! max-workspace-mobile:border-r-0!
-   max-workspace-mobile:border-r-current!
-  max-workspace-mobile:border-b! max-workspace-mobile:border-solid!
-  max-workspace-mobile:border-b-slate-200!
-`}>
-            <div className={`
-  min-h-14.5! pt-2.75! pr-3.5! pb-2.75! pl-3.5! flex! items-start!
-  justify-between! border-b! border-solid!
-  border-b-slate-200! bg-white! [&_h2]:mt-0! [&_h2]:mr-0! [&_h2]:mb-0!
-  [&_h2]:ml-0! [&_h2]:text-slate-700! [&_h2]:font-bold! [&_h2]:text-detail! max-lg:[&_h2]:text-xs! [&_h2]:leading-default!
-  [&_h2]:font-sans! [&_h2]:not-italic! [&_p]:mt-0.75! [&_p]:mr-0! [&_p]:mb-0! [&_p]:ml-0!
-  [&_p]:text-slate-400! [&_p]:text-fine! max-lg:[&_p]:text-xs! [&_button]:pt-1! [&_button]:pr-1.75! [&_button]:pb-1!
-  [&_button]:pl-1.75! [&_button]:rounded-field! [&_button]:text-slate-500! [&_button]:bg-white!
-  [&_button]:text-fine! max-lg:[&_button]:text-xs! [&_button]:border! [&_button]:border-solid! [&_button]:border-slate-200!
-`}>
+        <div className="min-h-167.5 grid grid-cols-3 max-xl:grid-cols-3 max-md:block">
+          <aside className="min-w-0 border-r border-r-slate-200 bg-slate-50 max-md:max-h-97.5 max-md:border-r-0 max-md:border-b max-md:border-b-slate-200 max-md:overflow-auto">
+            <div className="min-h-14.5 flex items-start justify-between border-b border-b-slate-200 bg-white py-2.75 px-3.5">
               <div>
-                <h2>Review queue</h2>
-                <p>{visibleAlerts.length} matching alerts · sorted by severity</p>
+                <h2 className="text-slate-700 font-bold text-xs max-lg:text-xs leading-normal font-sans not-italic my-0 mx-0">
+                  Review queue
+                </h2>
+                <p className="mt-0.75 mb-0 text-slate-400 text-xs max-lg:text-xs mx-0">
+                  {visibleAlerts.length} matching alerts · sorted by severity
+                </p>
               </div>
-              <button>Newest first</button>
+              <button className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 rounded-md text-slate-500 bg-white text-xs max-lg:text-xs border border-slate-200 py-1 px-1.75">
+                Newest first
+              </button>
             </div>
-            <div className={"max-h-180! overflow-y-auto! max-workspace-mobile:max-h-82.5!"}>
+            <div className="max-h-180 overflow-y-auto max-md:max-h-82.5">
               {visibleAlerts.map((alert) => (
                 <button
                   key={alert.id}
@@ -472,220 +487,324 @@ export default function Intelligence() {
                     setSavedNote("");
                     setNote("");
                   }}
-                  className={`
-  w-full! min-h-28.75! pt-3.25! pr-2.75! pb-3.25! pl-2.75! flex! items-start!
-  gap-y-2.25! gap-x-2.25! border-t-0!  border-t-current!
-  border-r-0!  border-r-current!
-  border-b! border-solid! border-b-slate-200!
-  border-l-0!  border-l-current! text-inherit!
-  bg-white! text-left! [&:hover]:bg-slate-50! data-[state~=selected]:bg-blue-50!
-  data-[state~=selected]:shadow-active-nav!
-`} data-state={selected?.id === alert.id ? "selected" : ""}
+                  className={[
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 w-full min-h-28.75 flex items-start border-t-0 border-r-0 border-b border-b-slate-200 border-l-0 text-inherit text-left hover:bg-slate-50 gap-2.25 py-3.25 px-2.75",
+                    String(selected?.id === alert.id ? "selected" : "")
+                      .split(" ")
+                      .includes("selected")
+                      ? "bg-blue-50 ring-2 ring-blue-600"
+                      : "bg-white",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  data-state={selected?.id === alert.id ? "selected" : ""}
                 >
-                  <span className={`
-  w-7.75! h-7.75! flex-none! grid! place-items-center! rounded-control!
-  [&_svg]:w-4! [&_svg]:h-4! data-[state~=critical]:text-red-600! data-[state~=critical]:bg-red-50! data-[state~=high]:text-amber-700!
-  data-[state~=high]:bg-amber-100! data-[state~=medium]:text-slate-500! data-[state~=medium]:bg-slate-100! data-[state~=low]:text-slate-500!
-  data-[state~=low]:bg-slate-100!
-`} data-state={alert.severity.toLowerCase()}>
-                    <IntelligenceIcon type={typeIcons[alert.type]} />
+                  <span
+                    className={[
+                      "w-7.75 h-7.75 flex-none grid place-items-center rounded-lg",
+                      String(alert.severity.toLowerCase())
+                        .split(" ")
+                        .includes("critical")
+                        ? "text-red-600 bg-red-50"
+                        : "",
+                      String(alert.severity.toLowerCase())
+                        .split(" ")
+                        .includes("high")
+                        ? "text-amber-700 bg-amber-100"
+                        : "",
+                      String(alert.severity.toLowerCase())
+                        .split(" ")
+                        .includes("medium")
+                        ? "text-slate-500 bg-slate-100"
+                        : "",
+                      String(alert.severity.toLowerCase())
+                        .split(" ")
+                        .includes("low")
+                        ? "text-slate-500 bg-slate-100"
+                        : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    data-state={alert.severity.toLowerCase()}
+                  >
+                    <IntelligenceIcon
+                      className="w-4 h-4"
+                      type={typeIcons[alert.type]}
+                    />
                   </span>
-                  <span className={`
-  min-w-0! flex-1! [&_>_span:first-child]:flex! [&_>_span:first-child]:items-center!
-  [&_>_span:first-child]:gap-y-1.5! [&_>_span:first-child]:gap-x-1.5! [&_em]:text-slate-400!
-  [&_em]:text-fine! max-lg:[&_em]:text-xs! [&_em]:not-italic! [&_>_strong]:block! [&_>_strong]:overflow-x-hidden!
-  [&_>_strong]:overflow-y-hidden! [&_>_strong]:whitespace-nowrap! [&_>_strong]:text-ellipsis!
-  [&_>_strong]:mt-1.75! [&_>_strong]:text-slate-700! [&_>_strong]:text-micro! max-lg:[&_>_strong]:text-xs! [&_>_small]:block!
-  [&_>_small]:overflow-x-hidden! [&_>_small]:overflow-y-hidden! [&_>_small]:whitespace-nowrap!
-  [&_>_small]:text-ellipsis! [&_>_small]:mt-1! [&_>_small]:text-slate-400! [&_>_small]:text-fine! max-lg:[&_>_small]:text-xs!
-`}>
-                    <span>
-                      <b className={`
-  w-fit! pt-0.75! pr-1.5! pb-0.75! pl-1.5! inline-block! rounded-lg!
-  text-tiny! max-lg:text-xs! not-italic! font-bold! whitespace-nowrap! data-[state~=critical]:text-red-700! data-[state~=critical]:bg-red-100!
-  data-[state~=high]:text-amber-700! data-[state~=high]:bg-amber-100! data-[state~=medium]:text-slate-500! data-[state~=medium]:bg-slate-100!
-  data-[state~=low]:text-slate-500! data-[state~=low]:bg-slate-100!
-`} data-state={alert.severity.toLowerCase()}>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-1.5">
+                      <b
+                        className={[
+                          "w-fit inline-block rounded-lg text-xs max-lg:text-xs not-italic font-bold whitespace-nowrap py-0.75 px-1.5",
+                          String(alert.severity.toLowerCase())
+                            .split(" ")
+                            .includes("critical")
+                            ? "text-red-700 bg-red-100"
+                            : "",
+                          String(alert.severity.toLowerCase())
+                            .split(" ")
+                            .includes("high")
+                            ? "text-amber-700 bg-amber-100"
+                            : "",
+                          String(alert.severity.toLowerCase())
+                            .split(" ")
+                            .includes("medium")
+                            ? "text-slate-500 bg-slate-100"
+                            : "",
+                          String(alert.severity.toLowerCase())
+                            .split(" ")
+                            .includes("low")
+                            ? "text-slate-500 bg-slate-100"
+                            : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        data-state={alert.severity.toLowerCase()}
+                      >
                         {alert.severity}
                       </b>
-                      <em>{alert.updated} WAT</em>
+                      <em className="text-slate-400 text-xs max-lg:text-xs not-italic">
+                        {alert.updated} WAT
+                      </em>
                     </span>
-                    <strong>{alert.title}</strong>
-                    <small>
+                    <strong className="block whitespace-nowrap text-ellipsis mt-1.75 text-slate-700 text-xs max-lg:text-xs overflow-hidden">
+                      {alert.title}
+                    </strong>
+                    <small className="block whitespace-nowrap text-ellipsis mt-1 text-slate-400 text-xs max-lg:text-xs overflow-hidden">
                       {alert.entity}
-                      {alert.vehicle ? ` · ${alert.vehicle}` : ""} · {alert.state}
+                      {alert.vehicle ? ` · ${alert.vehicle}` : ""} ·{" "}
+                      {alert.state}
                     </small>
-                    <span className={`
-  mt-2! flex! items-center! gap-y-1.5! gap-x-1.5! [&_>_i:first-child]:text-slate-500!
-  [&_>_i:first-child]:text-fine! max-lg:[&_>_i:first-child]:text-xs! [&_>_i:first-child]:not-italic!
-`}>
-                      <i>{alert.type}</i>
-                      <i className={`
-  w-fit! pt-0.75! pr-1.5! pb-0.75! pl-1.5! inline-block! rounded-lg!
-  text-tiny! max-lg:text-xs! not-italic! font-bold! whitespace-nowrap! text-slate-500! bg-slate-100! data-[state~=new]:text-blue-700!
-  data-[state~=new]:bg-blue-50! data-[state~=acknowledged]:text-amber-800! data-[state~=acknowledged]:bg-amber-100!
-  data-[state~=under-review]:text-slate-500! data-[state~=under-review]:bg-slate-100! data-[state~=resolved]:text-teal-800!
-  data-[state~=resolved]:bg-slate-200!
-`} data-slot="review-label" data-state={alert.status.toLowerCase().replace(" ", "-")}>
+                    <span className="mt-2 flex items-center gap-1.5">
+                      <i className="text-slate-500 text-xs max-lg:text-xs not-italic">
+                        {alert.type}
+                      </i>
+                      <i
+                        className={[
+                          "w-fit inline-block rounded-lg text-xs max-lg:text-xs not-italic font-bold whitespace-nowrap text-slate-500 bg-slate-100 py-0.75 px-1.5",
+                          String(alert.status.toLowerCase().replace(" ", "-"))
+                            .split(" ")
+                            .includes("new")
+                            ? "text-blue-700 bg-blue-50"
+                            : "",
+                          String(alert.status.toLowerCase().replace(" ", "-"))
+                            .split(" ")
+                            .includes("acknowledged")
+                            ? "text-amber-800 bg-amber-100"
+                            : "",
+                          String(alert.status.toLowerCase().replace(" ", "-"))
+                            .split(" ")
+                            .includes("under-review")
+                            ? "text-slate-500 bg-slate-100"
+                            : "",
+                          String(alert.status.toLowerCase().replace(" ", "-"))
+                            .split(" ")
+                            .includes("resolved")
+                            ? "text-teal-800 bg-slate-200"
+                            : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                        data-slot="review-label"
+                        data-state={alert.status
+                          .toLowerCase()
+                          .replace(" ", "-")}
+                      >
                         {alert.status}
                       </i>
                     </span>
                   </span>
-                  <span className={"pt-9.5! text-slate-400!"}>
+                  <span className="pt-9.5 text-slate-400">
                     <ChevronRight aria-hidden="true" />
                   </span>
                 </button>
               ))}
               {!visibleAlerts.length && (
-                <div className={`
-  min-h-87.5! flex! flex-col! items-center! justify-center! text-slate-400! [&_svg]:w-5.75!
-  [&_svg]:h-5.75! [&_strong]:mt-2.25! [&_strong]:text-slate-600! [&_strong]:text-micro! max-lg:[&_strong]:text-xs!
-  [&_span]:mt-0.75! [&_span]:text-fine! max-lg:[&_span]:text-xs!
-`}>
-                  <IntelligenceIcon type="search" />
-                  <strong>No matching alerts</strong>
-                  <span>Change the current search or filters.</span>
+                <div className="min-h-87.5 flex flex-col items-center justify-center text-slate-400">
+                  <IntelligenceIcon className="w-5.75 h-5.75" type="search" />
+                  <strong className="mt-2.25 text-slate-600 text-xs max-lg:text-xs">
+                    No matching alerts
+                  </strong>
+                  <span className="mt-0.75 text-xs max-lg:text-xs">
+                    Change the current search or filters.
+                  </span>
                 </div>
               )}
             </div>
           </aside>
 
           {selected ? (
-            <article className={"min-w-0! bg-slate-50!"}>
-              <div className={`
-  min-h-29! pt-4.5! pr-5.25! pb-4.5! pl-5.25! flex! justify-between! gap-y-5!
-  gap-x-5! border-b! border-solid!
-  border-b-slate-200! bg-white! **:data-[slot~=review-label]:ml-1.25! [&_h2]:mt-2.25!
-  [&_h2]:mr-0! [&_h2]:mb-1! [&_h2]:ml-0! [&_h2]:text-slate-700! [&_h2]:font-bold! [&_h2]:text-base!
-  [&_h2]:leading-default! [&_h2]:font-sans! [&_h2]:not-italic! [&_p]:mt-0! [&_p]:mr-0!
-  [&_p]:mb-0! [&_p]:ml-0! [&_p]:text-slate-500! [&_p]:text-label! max-lg:[&_p]:text-xs! max-workspace-mobile:pt-4! max-workspace-mobile:pr-4!
-  max-workspace-mobile:pb-4! max-workspace-mobile:pl-4!
-`}>
+            <article className="min-w-0 bg-slate-50 md:col-span-2">
+              <div className="min-h-29 flex justify-between border-b border-b-slate-200 bg-white gap-5 py-4.5 max-md:py-4 px-5.25 max-md:px-4">
                 <div>
-                  <span className={`
-  w-fit! pt-0.75! pr-1.5! pb-0.75! pl-1.5! inline-block! rounded-lg!
-  text-tiny! max-lg:text-xs! not-italic! font-bold! whitespace-nowrap! data-[state~=critical]:text-red-700! data-[state~=critical]:bg-red-100!
-  data-[state~=high]:text-amber-700! data-[state~=high]:bg-amber-100! data-[state~=medium]:text-slate-500! data-[state~=medium]:bg-slate-100!
-  data-[state~=low]:text-slate-500! data-[state~=low]:bg-slate-100!
-`} data-state={selected.severity.toLowerCase()}>
+                  <span
+                    className={[
+                      "w-fit inline-block rounded-lg text-xs max-lg:text-xs not-italic font-bold whitespace-nowrap py-0.75 px-1.5",
+                      String(selected.severity.toLowerCase())
+                        .split(" ")
+                        .includes("critical")
+                        ? "text-red-700 bg-red-100"
+                        : "",
+                      String(selected.severity.toLowerCase())
+                        .split(" ")
+                        .includes("high")
+                        ? "text-amber-700 bg-amber-100"
+                        : "",
+                      String(selected.severity.toLowerCase())
+                        .split(" ")
+                        .includes("medium")
+                        ? "text-slate-500 bg-slate-100"
+                        : "",
+                      String(selected.severity.toLowerCase())
+                        .split(" ")
+                        .includes("low")
+                        ? "text-slate-500 bg-slate-100"
+                        : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    data-state={selected.severity.toLowerCase()}
+                  >
                     {selected.severity}
                   </span>
                   <span
-                    className={`
-  w-fit! pt-0.75! pr-1.5! pb-0.75! pl-1.5! inline-block! rounded-lg!
-  text-tiny! max-lg:text-xs! not-italic! font-bold! whitespace-nowrap! text-slate-500! bg-slate-100! data-[state~=new]:text-blue-700!
-  data-[state~=new]:bg-blue-50! data-[state~=acknowledged]:text-amber-800! data-[state~=acknowledged]:bg-amber-100!
-  data-[state~=under-review]:text-slate-500! data-[state~=under-review]:bg-slate-100! data-[state~=resolved]:text-teal-800!
-  data-[state~=resolved]:bg-slate-200!
-`} data-slot="review-label" data-state={selected.status.toLowerCase().replace(" ", "-")}
+                    className={[
+                      "w-fit inline-block rounded-lg text-xs max-lg:text-xs not-italic font-bold whitespace-nowrap text-slate-500 bg-slate-100 py-0.75 px-1.5 ml-1.25",
+                      String(selected.status.toLowerCase().replace(" ", "-"))
+                        .split(" ")
+                        .includes("new")
+                        ? "text-blue-700 bg-blue-50"
+                        : "",
+                      String(selected.status.toLowerCase().replace(" ", "-"))
+                        .split(" ")
+                        .includes("acknowledged")
+                        ? "text-amber-800 bg-amber-100"
+                        : "",
+                      String(selected.status.toLowerCase().replace(" ", "-"))
+                        .split(" ")
+                        .includes("under-review")
+                        ? "text-slate-500 bg-slate-100"
+                        : "",
+                      String(selected.status.toLowerCase().replace(" ", "-"))
+                        .split(" ")
+                        .includes("resolved")
+                        ? "text-teal-800 bg-slate-200"
+                        : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    data-slot="review-label"
+                    data-state={selected.status.toLowerCase().replace(" ", "-")}
                   >
                     {selected.status}
                   </span>
-                  <h2>{selected.title}</h2>
-                  <p>{selected.description}</p>
+                  <h2 className="mt-2.25 mb-1 text-slate-700 font-bold text-base leading-normal font-sans not-italic mx-0">
+                    {selected.title}
+                  </h2>
+                  <p className="text-slate-500 text-xs max-lg:text-xs my-0 mx-0">
+                    {selected.description}
+                  </p>
                 </div>
-                <div className={`
-  min-w-18! text-right! [&_span]:block! [&_span]:text-slate-400! [&_span]:text-tiny! max-lg:[&_span]:text-xs!
-  [&_span]:tracking-section! [&_strong]:block! [&_strong]:mt-1! [&_strong]:text-slate-500!
-  [&_strong]:text-label! max-lg:[&_strong]:text-xs!
-`}>
-                  <span>ALERT ID</span>
-                  <strong>{selected.id}</strong>
+                <div className="min-w-18 text-right">
+                  <span className="block text-slate-400 text-xs max-lg:text-xs tracking-wide">
+                    ALERT ID
+                  </span>
+                  <strong className="block mt-1 text-slate-500 text-xs max-lg:text-xs">
+                    {selected.id}
+                  </strong>
                 </div>
               </div>
-              <div className={`
-  min-h-15! pt-2.5! pr-5.25! pb-2.5! pl-5.25! grid!
-  grid-cols-4! items-center! gap-y-2.5! gap-x-2.5!
-  border-b! border-solid! border-b-slate-200!
-  bg-white! [&_div]:pr-2.5! [&_div]:border-r! [&_div]:border-solid!
-  [&_div]:border-r-slate-200! [&_div:last-child]:border-0!
-   [&_div:last-child]:border-current! [&_span]:block!
-  [&_span]:mb-1! [&_span]:text-slate-400! [&_span]:text-fine! max-lg:[&_span]:text-xs! [&_strong]:block!
-  [&_strong]:overflow-x-hidden! [&_strong]:overflow-y-hidden! [&_strong]:text-slate-600!
-  [&_strong]:text-label! max-lg:[&_strong]:text-xs! [&_strong]:whitespace-nowrap! [&_strong]:text-ellipsis! max-workspace-mobile:pt-3!
-  max-workspace-mobile:pr-4! max-workspace-mobile:pb-3! max-workspace-mobile:pl-4! max-workspace-mobile:grid-cols-2!
-  max-workspace-mobile:gap-y-3! max-workspace-mobile:[&_div:nth-child(2)]:border-0!
-  
-  max-workspace-mobile:[&_div:nth-child(2)]:border-current!
-`}>
-                <div>
-                  <span>Related record</span>
-                  <strong>{selected.entity}</strong>
+              <div className="min-h-15 grid grid-cols-4 items-center border-b border-b-slate-200 bg-white max-md:grid-cols-2 max-md:gap-y-3 gap-2.5 py-2.5 max-md:py-3 px-5.25 max-md:px-4">
+                <div className="pr-2.5 border-r border-r-slate-200">
+                  <span className="block mb-1 text-slate-400 text-xs max-lg:text-xs">
+                    Related record
+                  </span>
+                  <strong className="block text-slate-600 text-xs max-lg:text-xs whitespace-nowrap text-ellipsis overflow-hidden">
+                    {selected.entity}
+                  </strong>
                 </div>
-                <div>
-                  <span>Location</span>
-                  <strong>
+                <div className="pr-2.5 border-r border-r-slate-200 max-md:border-0">
+                  <span className="block mb-1 text-slate-400 text-xs max-lg:text-xs">
+                    Location
+                  </span>
+                  <strong className="block text-slate-600 text-xs max-lg:text-xs whitespace-nowrap text-ellipsis overflow-hidden">
                     {selected.state} · {selected.zone}
                   </strong>
                 </div>
-                <div>
-                  <span>Source</span>
-                  <strong>{selected.source}</strong>
+                <div className="pr-2.5 border-r border-r-slate-200">
+                  <span className="block mb-1 text-slate-400 text-xs max-lg:text-xs">
+                    Source
+                  </span>
+                  <strong className="block text-slate-600 text-xs max-lg:text-xs whitespace-nowrap text-ellipsis overflow-hidden">
+                    {selected.source}
+                  </strong>
                 </div>
-                <div>
-                  <span>Last updated</span>
-                  <strong>{selected.updated} WAT</strong>
+                <div className="pr-2.5 border-r border-r-slate-200 border-0">
+                  <span className="block mb-1 text-slate-400 text-xs max-lg:text-xs">
+                    Last updated
+                  </span>
+                  <strong className="block text-slate-600 text-xs max-lg:text-xs whitespace-nowrap text-ellipsis overflow-hidden">
+                    {selected.updated} WAT
+                  </strong>
                 </div>
               </div>
 
               {selected.prediction && (
-                <section className={"mt-3.5! mr-4! mb-0! ml-4! overflow-x-hidden! overflow-y-hidden! rounded-lg! bg-slate-50! border! border-solid! border-slate-300!"}>
-                  <div className={`
-  h-9.75! pt-0! pr-3.25! pb-0! pl-3.25! flex! items-center! justify-between!
-  border-b! border-solid! border-b-slate-200!
-  [&_>_span]:flex! [&_>_span]:items-center! [&_>_span]:gap-y-1.75! [&_>_span]:gap-x-1.75!
-  [&_>_span]:text-slate-500! [&_svg]:w-4! [&_svg]:h-4! [&_strong]:text-slate-600! [&_strong]:text-label! max-lg:[&_strong]:text-xs!
-  [&_b]:pt-0.75! [&_b]:pr-1.5! [&_b]:pb-0.75! [&_b]:pl-1.5! [&_b]:rounded-lg! [&_b]:text-slate-500!
-  [&_b]:bg-slate-100! [&_b]:text-tiny! max-lg:[&_b]:text-xs!
-`}>
-                    <span>
-                      <IntelligenceIcon type="spark" />
-                      <strong>AI-assisted prediction</strong>
+                <section className="mt-3.5 mb-0 rounded-lg bg-slate-50 border border-slate-300 mx-4 overflow-hidden">
+                  <div className="h-9.75 flex items-center justify-between border-b border-b-slate-200 py-0 px-3.25">
+                    <span className="flex items-center text-slate-500 gap-1.75">
+                      <IntelligenceIcon className="w-4 h-4" type="spark" />
+                      <strong className="text-slate-600 text-xs max-lg:text-xs">
+                        AI-assisted prediction
+                      </strong>
                     </span>
-                    <b>ETA v0.1</b>
+                    <b className="rounded-lg text-slate-500 bg-slate-100 text-xs max-lg:text-xs py-0.75 px-1.5">
+                      ETA v0.1
+                    </b>
                   </div>
-                  <div className={`
-  min-h-20.5! pt-3.25! pr-4.5! pb-3.25! pl-4.5! flex! items-center!
-  gap-y-5.5! gap-x-5.5! [&_>_div_span]:block! [&_>_div_span]:mb-0.75! [&_>_div_span]:text-slate-500!
-  [&_>_div_span]:text-fine! max-lg:[&_>_div_span]:text-xs! [&_>_div_strong]:inline! [&_>_div_strong]:text-slate-700!
-  [&_>_div_strong]:font-bold! [&_>_div_strong]:text-xl! [&_>_div_strong]:leading-default!
-  [&_>_div_strong]:font-sans! [&_>_div_strong]:not-italic! [&_>_div_small]:inline!
-  [&_>_div_small]:ml-0.75! [&_>_div_small]:text-slate-400! [&_>_div_small]:text-tiny! max-lg:[&_>_div_small]:text-xs!
-  [&_>_i]:text-slate-400! [&_>_i]:not-italic! [&_[data-state~=predicted]_strong]:text-red-600! **:data-[state~=delay-result]:ml-auto!
-  **:data-[state~=delay-result]:pt-2.25! **:data-[state~=delay-result]:pr-3.25! **:data-[state~=delay-result]:pb-2.25!
-  **:data-[state~=delay-result]:pl-3.25! **:data-[state~=delay-result]:rounded-md! **:data-[state~=delay-result]:bg-red-100!
-  [&_[data-state~=delay-result]_strong]:text-amber-700! [&_[data-state~=delay-result]_strong]:text-sm! max-workspace-mobile:flex-wrap!
-  max-workspace-mobile:gap-y-3! max-workspace-mobile:gap-x-3! max-workspace-mobile:**:data-[state~=delay-result]:w-full!
-  max-workspace-mobile:**:data-[state~=delay-result]:mt-0! max-workspace-mobile:**:data-[state~=delay-result]:mr-0!
-  max-workspace-mobile:**:data-[state~=delay-result]:mb-0! max-workspace-mobile:**:data-[state~=delay-result]:ml-0!
-`}>
+                  <div className="min-h-20.5 flex items-center max-md:flex-wrap gap-5.5 max-md:gap-3 py-3.25 px-4.5">
                     <div>
-                      <span>Scheduled arrival</span>
-                      <strong>{selected.prediction.deadline}</strong>
-                      <small>WAT</small>
+                      <span className="block mb-0.75 text-slate-500 text-xs max-lg:text-xs">
+                        Scheduled arrival
+                      </span>
+                      <strong className="inline text-slate-700 font-bold text-xl leading-normal font-sans not-italic">
+                        {selected.prediction.deadline}
+                      </strong>
+                      <small className="inline ml-0.75 text-slate-400 text-xs max-lg:text-xs">
+                        WAT
+                      </small>
                     </div>
-                    <i>
+                    <i className="text-slate-400 not-italic">
                       <ArrowRight aria-hidden="true" />
                     </i>
                     <div data-state="predicted">
-                      <span>Predicted arrival</span>
-                      <strong>{selected.prediction.arrival}</strong>
-                      <small>WAT</small>
+                      <span className="block mb-0.75 text-slate-500 text-xs max-lg:text-xs">
+                        Predicted arrival
+                      </span>
+                      <strong className="inline text-red-600 font-bold text-xl leading-normal font-sans not-italic">
+                        {selected.prediction.arrival}
+                      </strong>
+                      <small className="inline ml-0.75 text-slate-400 text-xs max-lg:text-xs">
+                        WAT
+                      </small>
                     </div>
-                    <div data-state="delay-result">
-                      <span>Estimated lateness</span>
-                      <strong>{selected.prediction.lateness} min</strong>
+                    <div
+                      className="ml-auto rounded-md bg-red-100 max-md:w-full py-2.25 px-3.25 max-md:my-0 max-md:mx-0"
+                      data-state="delay-result"
+                    >
+                      <span className="block mb-0.75 text-slate-500 text-xs max-lg:text-xs">
+                        Estimated lateness
+                      </span>
+                      <strong className="inline text-amber-700 font-bold text-sm leading-normal font-sans not-italic">
+                        {selected.prediction.lateness} min
+                      </strong>
                     </div>
                   </div>
-                  <div className={`
-  min-h-7.5! pt-1.75! pr-3.25! pb-1.75! pl-3.25! flex! gap-y-4.5!
-  gap-x-4.5! border-t! border-solid! border-t-slate-200!
-  text-slate-400! bg-slate-100! text-tiny! max-lg:text-xs! [&_span:not(:first-child)::before]:content-separator!
-  [&_span:not(:first-child)::before]:pr-4.5! [&_span:not(:first-child)::before]:text-slate-400!
-  max-workspace-mobile:items-start! max-workspace-mobile:flex-col! max-workspace-mobile:gap-y-1! max-workspace-mobile:gap-x-1!
-  max-workspace-mobile:[&_span:not(:first-child)::before]:hidden!
-`}>
-                    <span>Generated {selected.prediction.generated} WAT</span>
+                  <div className="min-h-7.5 flex border-t border-t-slate-200 text-slate-400 bg-slate-100 text-xs max-lg:text-xs max-md:items-start max-md:flex-col gap-4.5 max-md:gap-1 py-1.75 px-3.25">
+                    <span className="">
+                      · Generated {selected.prediction.generated} WAT
+                    </span>
                     <span>Prediction details</span>
                     <span>No action automatically applied</span>
                   </div>
@@ -693,167 +812,154 @@ export default function Intelligence() {
               )}
 
               {selected.disruption && (
-                <section className={`
-  mt-3.5! mr-4! mb-0! ml-4! pt-3.25! pr-3.25! pb-3.25! pl-3.25! flex!
-  items-center! gap-y-2.75! gap-x-2.75! rounded-lg! bg-slate-50! border! border-solid!
-  border-slate-200! [&_>_div:nth-child(2)]:flex-1! [&_>_div_>_span]:text-slate-500!
-  [&_>_div_>_span]:text-tiny! max-lg:[&_>_div_>_span]:text-xs! [&_>_div_>_span]:font-bold! [&_>_div_>_span]:tracking-caption!
-  [&_>_div_>_strong]:mt-0.75! [&_>_div_>_strong]:block! [&_>_div_>_strong]:text-slate-700!
-  [&_>_div_>_strong]:text-micro! max-lg:[&_>_div_>_strong]:text-xs! [&_p]:mt-0.75! [&_p]:mr-0! [&_p]:mb-0! [&_p]:ml-0! [&_p]:text-slate-500!
-  [&_p]:text-fine! max-lg:[&_p]:text-xs! [&_>_div:last-child]:pl-3.75! [&_>_div:last-child]:border-l!
-  [&_>_div:last-child]:border-solid!
-  [&_>_div:last-child]:border-l-slate-200! [&_>_div:last-child]:text-center!
-  [&_>_div:last-child_strong]:text-slate-500! [&_>_div:last-child_strong]:font-bold!
-  [&_>_div:last-child_strong]:text-heading-sm! [&_>_div:last-child_strong]:leading-default!
-  [&_>_div:last-child_strong]:font-sans! [&_>_div:last-child_strong]:not-italic!
-`}>
-                  <span className={"w-8.5! h-8.5! grid! place-items-center! rounded-control! text-slate-500! bg-slate-100! [&_svg]:w-4.25! [&_svg]:h-4.25!"}>
-                    <IntelligenceIcon type="cloud" />
+                <section className="mt-3.5 mb-0 flex items-center rounded-lg bg-slate-50 border border-slate-200 gap-2.75 py-3.25 px-3.25 mx-4">
+                  <span className="w-8.5 h-8.5 grid place-items-center rounded-lg text-slate-500 bg-slate-100">
+                    <IntelligenceIcon className="w-4.25 h-4.25" type="cloud" />
                   </span>
-                  <div>
-                    <span>EVENT DETAILS</span>
-                    <strong>{selected.title}</strong>
-                    <p>
-                      {selected.zone} · Valid until {selected.disruption.validUntil} WAT
+                  <div className="flex-1">
+                    <span className="text-slate-500 text-xs max-lg:text-xs font-bold tracking-wide">
+                      EVENT DETAILS
+                    </span>
+                    <strong className="mt-0.75 block text-slate-700 text-xs max-lg:text-xs">
+                      {selected.title}
+                    </strong>
+                    <p className="mt-0.75 mb-0 text-slate-500 text-xs max-lg:text-xs mx-0">
+                      {selected.zone} · Valid until{" "}
+                      {selected.disruption.validUntil} WAT
                     </p>
                   </div>
-                  <div>
-                    <span>AFFECTED DELIVERIES</span>
-                    <strong>{selected.disruption.affected}</strong>
+                  <div className="pl-3.75 border-l border-l-slate-200 text-center">
+                    <span className="text-slate-500 text-xs max-lg:text-xs font-bold tracking-wide">
+                      AFFECTED DELIVERIES
+                    </span>
+                    <strong className="mt-0.75 block text-slate-500 text-lg max-lg:text-xs font-bold leading-normal font-sans not-italic">
+                      {selected.disruption.affected}
+                    </strong>
                   </div>
                 </section>
               )}
 
-              <div className={"mt-3.5! mr-4! mb-0! ml-4! grid! grid-cols-2! gap-y-2.5! gap-x-2.5! max-intelligence-compact:grid-cols-1!"}>
-                <section className={`
-  pt-3.25! pr-3.25! pb-3.25! pl-3.25! rounded-lg! bg-white! border! border-solid!
-  border-slate-200! [&_blockquote]:min-h-10.5! [&_blockquote]:mt-3! [&_blockquote]:mr-0!
-  [&_blockquote]:mb-3! [&_blockquote]:ml-0! [&_blockquote]:pt-2.25! [&_blockquote]:pr-2.25!
-  [&_blockquote]:pb-2.25! [&_blockquote]:pl-2.25! [&_blockquote]:border-l-2!
-  [&_blockquote]:border-solid! [&_blockquote]:border-l-blue-600!
-  [&_blockquote]:text-slate-500! [&_blockquote]:bg-slate-50! [&_blockquote]:text-fine! max-lg:[&_blockquote]:text-xs!
-  [&_blockquote]:leading-normal!
-`}>
-                  <div className={`
-  flex! items-center! gap-y-2! gap-x-2! [&_h3]:mt-0! [&_h3]:mr-0! [&_h3]:mb-0! [&_h3]:ml-0!
-  [&_h3]:text-slate-700! [&_h3]:font-bold! [&_h3]:text-micro! max-lg:[&_h3]:text-xs! [&_h3]:leading-default!
-  [&_h3]:font-sans! [&_h3]:not-italic! [&_p]:mt-0.5! [&_p]:mr-0! [&_p]:mb-0! [&_p]:ml-0!
-  [&_p]:text-slate-400! [&_p]:text-tiny! max-lg:[&_p]:text-xs!
-`}>
-                    <span className={"w-7.25! h-7.25! grid! place-items-center! rounded-md! text-blue-600! bg-blue-50! [&_svg]:w-3.75! [&_svg]:h-3.75!"}>
-                      <IntelligenceIcon type="check" />
+              <div className="mt-3.5 mb-0 grid grid-cols-2 max-xl:grid-cols-1 gap-2.5 mx-4">
+                <section className="rounded-lg bg-white border border-slate-200 py-3.25 px-3.25">
+                  <div className="flex items-center gap-2">
+                    <span className="w-7.25 h-7.25 grid place-items-center rounded-md text-blue-600 bg-blue-50">
+                      <IntelligenceIcon
+                        className="w-3.75 h-3.75"
+                        type="check"
+                      />
                     </span>
                     <div>
-                      <h3>Recorded fact</h3>
-                      <p>Evidence from operational event records</p>
+                      <h3 className="text-slate-700 font-bold text-xs max-lg:text-xs leading-normal font-sans not-italic my-0 mx-0">
+                        Recorded fact
+                      </h3>
+                      <p className="mt-0.5 mb-0 text-slate-400 text-xs max-lg:text-xs mx-0">
+                        Evidence from operational event records
+                      </p>
                     </div>
                   </div>
-                  <blockquote>{selected.fact}</blockquote>
-                  <div className={"grid! grid-cols-alert-heading! gap-y-1.5! gap-x-1.5! text-slate-400! text-tiny! max-lg:text-xs! [&_strong]:text-slate-500!"}>
+                  <blockquote className="min-h-10.5 border-l-2 border-l-blue-600 text-slate-500 bg-slate-50 text-xs max-lg:text-xs leading-normal py-2.25 px-2.25 my-3 mx-0">
+                    {selected.fact}
+                  </blockquote>
+                  <div className="flex text-slate-400 text-xs max-lg:text-xs gap-1.5">
                     <span>Source</span>
-                    <strong>{selected.source}</strong>
+                    <strong className="text-slate-500">
+                      {selected.source}
+                    </strong>
                     <span>First detected</span>
-                    <strong>{selected.created} WAT</strong>
+                    <strong className="text-slate-500">
+                      {selected.created} WAT
+                    </strong>
                   </div>
                 </section>
-                <section className={`
-  pt-3.25! pr-3.25! pb-3.25! pl-3.25! rounded-lg! bg-white! border!
-  border-solid! border-slate-200! [&_>_p]:min-h-10.5! [&_>_p]:mt-3! [&_>_p]:mr-0! [&_>_p]:mb-3!
-  [&_>_p]:ml-0! [&_>_p]:text-slate-500! [&_>_p]:text-fine! max-lg:[&_>_p]:text-xs! [&_>_p]:leading-normal! [&_>_small]:pt-2!
-  [&_>_small]:block! [&_>_small]:border-t! [&_>_small]:border-solid!
-  [&_>_small]:border-t-slate-200! [&_>_small]:text-slate-500! [&_>_small]:text-tiny! max-lg:[&_>_small]:text-xs!
-`}>
-                  <div className={`
-  flex! items-center! gap-y-2! gap-x-2! [&_h3]:mt-0! [&_h3]:mr-0! [&_h3]:mb-0! [&_h3]:ml-0!
-  [&_h3]:text-slate-700! [&_h3]:font-bold! [&_h3]:text-micro! max-lg:[&_h3]:text-xs! [&_h3]:leading-default!
-  [&_h3]:font-sans! [&_h3]:not-italic! [&_p]:mt-0.5! [&_p]:mr-0! [&_p]:mb-0! [&_p]:ml-0!
-  [&_p]:text-slate-400! [&_p]:text-tiny! max-lg:[&_p]:text-xs!
-`}>
-                    <span className={"w-7.25! h-7.25! grid! place-items-center! rounded-md! text-amber-700! bg-amber-100! [&_svg]:w-3.75! [&_svg]:h-3.75!"}>
-                      <IntelligenceIcon type="note" />
+                <section className="rounded-lg bg-white border border-slate-200 py-3.25 px-3.25">
+                  <div className="flex items-center gap-2">
+                    <span className="w-7.25 h-7.25 grid place-items-center rounded-md text-amber-700 bg-amber-100">
+                      <IntelligenceIcon className="w-3.75 h-3.75" type="note" />
                     </span>
                     <div>
-                      <h3>Recommended review</h3>
-                      <p>Guidance for human assessment</p>
+                      <h3 className="text-slate-700 font-bold text-xs max-lg:text-xs leading-normal font-sans not-italic my-0 mx-0">
+                        Recommended review
+                      </h3>
+                      <p className="mt-0.5 mb-0 text-slate-400 text-xs max-lg:text-xs mx-0">
+                        Guidance for human assessment
+                      </p>
                     </div>
                   </div>
-                  <p>{selected.action}</p>
-                  <small>Recommendations do not change approved assignments.</small>
+                  <p className="min-h-10.5 text-slate-500 text-xs max-lg:text-xs leading-normal my-3 mx-0">
+                    {selected.action}
+                  </p>
+                  <small className="pt-2 block border-t border-t-slate-200 text-slate-500 text-xs max-lg:text-xs">
+                    Recommendations do not change approved assignments.
+                  </small>
                 </section>
               </div>
 
               {can("manage_operations") ? (
-                <section className={`
-  mt-3.5! mr-4! mb-0! ml-4! pt-3.5! pr-3.5! pb-3.5! pl-3.5! rounded-lg!
-  bg-white! border! border-solid! border-slate-200! [&_textarea]:w-full! [&_textarea]:mt-2.75!
-  [&_textarea]:pt-2.25! [&_textarea]:pr-2.25! [&_textarea]:pb-2.25! [&_textarea]:pl-2.25!
-  [&_textarea]:resize-y! [&_textarea]:rounded-md! [&_textarea]:outline-none! [&_textarea]:text-slate-600!
-  [&_textarea]:bg-slate-50! [&_textarea]:text-label! max-lg:[&_textarea]:text-base! [&_textarea]:leading-body! [&_textarea]:border!
-  [&_textarea]:border-solid! [&_textarea]:border-slate-200!
-  [&_textarea:focus]:shadow-search-focus!
-  [&_textarea:focus]:border-blue-300!
-`}>
-                  <div className={`
-  flex! items-start! justify-between! [&_h3]:mt-0! [&_h3]:mr-0! [&_h3]:mb-0! [&_h3]:ml-0!
-  [&_h3]:text-slate-700! [&_h3]:font-bold! [&_h3]:text-micro! max-lg:[&_h3]:text-xs! [&_h3]:leading-default!
-  [&_h3]:font-sans! [&_h3]:not-italic! [&_p]:mt-0.75! [&_p]:mr-0! [&_p]:mb-0! [&_p]:ml-0!
-  [&_p]:text-slate-400! [&_p]:text-tiny! max-lg:[&_p]:text-xs! [&_>_span]:flex! [&_>_span]:items-center! [&_>_span]:gap-y-1!
-  [&_>_span]:gap-x-1! [&_>_span]:text-slate-500! [&_>_span]:text-fine! max-lg:[&_>_span]:text-xs! [&_svg]:w-3.25! [&_svg]:h-3.25!
-`}>
+                <section className="mt-3.5 mb-0 rounded-lg bg-white border border-slate-200 py-3.5 px-3.5 mx-4">
+                  <div className="flex items-start justify-between">
                     <div>
-                      <h3>Coordinator review</h3>
-                      <p>Record a note before updating this alert.</p>
+                      <h3 className="text-slate-700 font-bold text-xs max-lg:text-xs leading-normal font-sans not-italic my-0 mx-0">
+                        Coordinator review
+                      </h3>
+                      <p className="mt-0.75 mb-0 text-slate-400 text-xs max-lg:text-xs mx-0">
+                        Record a note before updating this alert.
+                      </p>
                     </div>
-                    <span>
-                      <IntelligenceIcon type="person" />
+                    <span className="flex items-center text-slate-500 text-xs max-lg:text-xs gap-1">
+                      <IntelligenceIcon
+                        className="w-3.25 h-3.25"
+                        type="person"
+                      />
                       {currentUser.name}
                     </span>
                   </div>
                   {savedNote && (
-                    <div className={`
-  mt-2.5! pt-2.25! pr-2.25! pb-2.25! pl-2.25! flex! gap-y-2! gap-x-2! rounded-md!
-  text-emerald-700! bg-emerald-50! [&_>_svg]:w-3.75! [&_>_svg]:h-3.75! [&_strong]:block!
-  [&_strong]:text-teal-900! [&_strong]:text-fine! max-lg:[&_strong]:text-xs! [&_span]:block! [&_span]:text-slate-500!
-  [&_span]:text-tiny! max-lg:[&_span]:text-xs! [&_p]:mt-0.75! [&_p]:mr-0! [&_p]:mb-0.75! [&_p]:ml-0! [&_p]:text-slate-500!
-  [&_p]:text-fine! max-lg:[&_p]:text-xs!
-`}>
-                      <IntelligenceIcon type="check" />
+                    <div className="mt-2.5 flex rounded-md text-emerald-700 bg-emerald-50 gap-2 py-2.25 px-2.25">
+                      <IntelligenceIcon
+                        className="w-3.75 h-3.75"
+                        type="check"
+                      />
                       <div>
-                        <strong>Review note recorded</strong>
-                        <p>{savedNote}</p>
-                        <span>{currentUser.name} · 3 Dec 2026, 09:36 WAT</span>
+                        <strong className="block text-teal-900 text-xs max-lg:text-xs">
+                          Review note recorded
+                        </strong>
+                        <p className="text-slate-500 text-xs max-lg:text-xs my-0.75 mx-0">
+                          {savedNote}
+                        </p>
+                        <span className="block text-slate-500 text-xs max-lg:text-xs">
+                          {currentUser.name} · 3 Dec 2026, 09:36 WAT
+                        </span>
                       </div>
                     </div>
                   )}
                   <textarea
+                    className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base w-full mt-2.75 resize-y rounded-md outline-none text-slate-600 bg-slate-50 text-xs leading-normal border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-blue-300 py-2.25 px-2.25"
                     value={note}
                     onChange={(event) => setNote(event.target.value)}
                     placeholder="Add context, findings or the reason for your decision…"
                     rows={3}
                   />
-                  <div className={`
-  mt-2! flex! justify-between! gap-y-2.5! gap-x-2.5! [&_>_div]:flex!
-  [&_>_div]:gap-y-1.25! [&_>_div]:gap-x-1.25! [&_button]:h-7.75! [&_button]:pt-0! [&_button]:pr-2.25!
-  [&_button]:pb-0! [&_button]:pl-2.25! [&_button]:rounded-md! [&_button]:flex! [&_button]:items-center!
-  [&_button]:gap-y-1! [&_button]:gap-x-1! [&_button]:text-slate-500! [&_button]:bg-white!
-  [&_button]:text-fine! max-lg:[&_button]:text-xs! [&_button]:font-bold! [&_button]:border! [&_button]:border-solid!
-  [&_button]:border-slate-300! [&_button:hover]:bg-slate-50! [&_svg]:w-3.25! [&_svg]:h-3.25!
-  **:data-[state~=assign-action]:text-blue-600! **:data-[state~=resolve-action]:text-white! **:data-[state~=resolve-action]:bg-emerald-700!
-  **:data-[state~=resolve-action]:border-emerald-700! [&_[data-state~=resolve-action]:hover]:bg-teal-800! max-intelligence-compact:items-stretch!
-  max-intelligence-compact:flex-col! max-intelligence-compact:[&_>_div]:justify-end! max-workspace-mobile:[&_>_div]:grid!
-  max-workspace-mobile:[&_>_div]:grid-cols-2!
-  max-workspace-mobile:**:data-[state~=resolve-action]:col-span-full!
-`}>
+                  <div className="mt-2 flex justify-between max-xl:items-stretch max-xl:flex-col gap-2.5">
                     <button
+                      className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 h-7.75 rounded-md flex items-center text-blue-600 bg-white text-xs max-lg:text-xs font-bold border border-slate-300 hover:bg-slate-50 gap-1 py-0 px-2.25"
                       data-state="assign-action"
                       onClick={() => updateSelected("Under review")}
                     >
-                      <IntelligenceIcon type="person" />
+                      <IntelligenceIcon
+                        className="w-3.25 h-3.25"
+                        type="person"
+                      />
                       Assign to me
                     </button>
-                    <div>
-                      <button onClick={() => updateSelected("Acknowledged")}>Acknowledge</button>
+                    <div className="flex max-xl:justify-end max-md:grid max-md:grid-cols-2 gap-1.25">
                       <button
+                        className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 h-7.75 rounded-md flex items-center text-slate-500 bg-white text-xs max-lg:text-xs font-bold border border-slate-300 hover:bg-slate-50 gap-1 py-0 px-2.25"
+                        onClick={() => updateSelected("Acknowledged")}
+                      >
+                        Acknowledge
+                      </button>
+                      <button
+                        className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 h-7.75 rounded-md flex items-center text-slate-500 bg-white text-xs max-lg:text-xs font-bold border border-slate-300 hover:bg-slate-50 gap-1 py-0 px-2.25"
                         onClick={() => {
                           updateSelected("Under review");
                           if (note.trim()) {
@@ -865,6 +971,7 @@ export default function Intelligence() {
                         Start review
                       </button>
                       <button
+                        className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 h-7.75 rounded-md flex items-center text-white bg-emerald-700 text-xs max-lg:text-xs font-bold border border-emerald-700 hover:bg-emerald-800 gap-1 py-0 px-2.25 max-md:col-span-full"
                         data-state="resolve-action"
                         onClick={() => {
                           updateSelected("Resolved");
@@ -874,60 +981,47 @@ export default function Intelligence() {
                           }
                         }}
                       >
-                        <IntelligenceIcon type="check" />
+                        <IntelligenceIcon
+                          className="w-3.25 h-3.25"
+                          type="check"
+                        />
                         Resolve
                       </button>
                     </div>
                   </div>
                 </section>
               ) : (
-                <section className={`
-  mt-3.5! mr-4! mb-0! ml-4! pt-3.5! pr-3.5! pb-3.5! pl-3.5! rounded-lg!
-  bg-white! border! border-solid! border-slate-200! [&_textarea]:w-full! [&_textarea]:mt-2.75!
-  [&_textarea]:pt-2.25! [&_textarea]:pr-2.25! [&_textarea]:pb-2.25! [&_textarea]:pl-2.25!
-  [&_textarea]:resize-y! [&_textarea]:rounded-md! [&_textarea]:outline-none! [&_textarea]:text-slate-600!
-  [&_textarea]:bg-slate-50! [&_textarea]:text-label! max-lg:[&_textarea]:text-base! [&_textarea]:leading-body! [&_textarea]:border!
-  [&_textarea]:border-solid! [&_textarea]:border-slate-200!
-  [&_textarea:focus]:shadow-search-focus!
-  [&_textarea:focus]:border-blue-300!
-`}>
-                  <div className={`
-  flex! items-start! justify-between! [&_h3]:mt-0! [&_h3]:mr-0! [&_h3]:mb-0! [&_h3]:ml-0!
-  [&_h3]:text-slate-700! [&_h3]:font-bold! [&_h3]:text-micro! max-lg:[&_h3]:text-xs! [&_h3]:leading-default!
-  [&_h3]:font-sans! [&_h3]:not-italic! [&_p]:mt-0.75! [&_p]:mr-0! [&_p]:mb-0! [&_p]:ml-0!
-  [&_p]:text-slate-400! [&_p]:text-tiny! max-lg:[&_p]:text-xs! [&_>_span]:flex! [&_>_span]:items-center! [&_>_span]:gap-y-1!
-  [&_>_span]:gap-x-1! [&_>_span]:text-slate-500! [&_>_span]:text-fine! max-lg:[&_>_span]:text-xs! [&_svg]:w-3.25! [&_svg]:h-3.25!
-`}>
+                <section className="mt-3.5 mb-0 rounded-lg bg-white border border-slate-200 py-3.5 px-3.5 mx-4">
+                  <div className="flex items-start justify-between">
                     <div>
-                      <h3>Read-only review</h3>
-                      <p>Only an Operations Coordinator can update alert workflow state.</p>
+                      <h3 className="text-slate-700 font-bold text-xs max-lg:text-xs leading-normal font-sans not-italic my-0 mx-0">
+                        Read-only review
+                      </h3>
+                      <p className="mt-0.75 mb-0 text-slate-400 text-xs max-lg:text-xs mx-0">
+                        Only an Operations Coordinator can update alert workflow
+                        state.
+                      </p>
                     </div>
                   </div>
                 </section>
               )}
 
-              <footer className={`
-  mt-3.5! pt-2.5! pr-4! pb-2.5! pl-4! flex! justify-center! gap-y-4.5! gap-x-4.5!
-  border-t! border-solid! border-t-slate-200!
-  text-slate-400! bg-slate-100! text-tiny! max-lg:text-xs! [&_span:not(:first-child)::before]:content-separator!
-  [&_span:not(:first-child)::before]:pr-4.5! [&_span:not(:first-child)::before]:text-slate-300!
-  max-workspace-mobile:items-center! max-workspace-mobile:flex-wrap! max-workspace-mobile:gap-y-1.75! max-workspace-mobile:gap-x-3!
-`}>
-                <span>Created {selected.created} WAT</span>
+              <footer className="mt-3.5 flex justify-center border-t border-t-slate-200 text-slate-400 bg-slate-100 text-xs max-lg:text-xs max-md:items-center max-md:flex-wrap max-md:gap-y-1.75 max-md:gap-x-3 gap-4.5 py-2.5 px-4">
+                <span className="">· Created {selected.created} WAT</span>
                 <span>Updated {selected.updated} WAT</span>
                 <span>
-                  {selected.occurrences} occurrence{selected.occurrences === 1 ? "" : "s"}
+                  {selected.occurrences} occurrence
+                  {selected.occurrences === 1 ? "" : "s"}
                 </span>
                 <span>Stable condition key · no duplicate alerts</span>
               </footer>
             </article>
           ) : (
-            <div className={`
-  min-h-87.5! flex! flex-col! items-center! justify-center! text-slate-400!
-  [&_svg]:w-5.75! [&_svg]:h-5.75! [&_strong]:mt-2.25! [&_strong]:text-slate-600! [&_strong]:text-micro! max-lg:[&_strong]:text-xs!
-`}>
-              <IntelligenceIcon type="alert" />
-              <strong>Select an alert to review</strong>
+            <div className="min-h-87.5 flex flex-col items-center justify-center text-slate-400">
+              <IntelligenceIcon className="w-5.75 h-5.75" type="alert" />
+              <strong className="mt-2.25 text-slate-600 text-xs max-lg:text-xs">
+                Select an alert to review
+              </strong>
             </div>
           )}
         </div>

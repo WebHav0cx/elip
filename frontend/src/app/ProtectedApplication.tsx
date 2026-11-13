@@ -9,7 +9,13 @@ export function ProtectedApplication() {
   const { user } = useAuth();
   const location = useLocation();
   if (!user) {
-    return <Navigate to={buildRoute(ROUTES.LOGIN)} replace state={{ from: location.pathname }} />;
+    return (
+      <Navigate
+        to={buildRoute(ROUTES.LOGIN)}
+        replace
+        state={{ from: location.pathname }}
+      />
+    );
   }
   if (!canAccessRoute(user.role, location.pathname)) return <AccessDenied />;
   return <LegacyDashboard />;

@@ -1,7 +1,7 @@
 import { useEffect, useEffectEvent, type RefObject } from "react";
 
 let locks = 0;
-let previousOverflow = "";
+let alreadyLocked = false;
 
 /** Keep dialogs usable with a phone keyboard and prevent background scrolling. */
 export function useModalFocus(
@@ -15,8 +15,8 @@ export function useModalFocus(
     if (!open || !element) return;
     const previousFocus = document.activeElement;
     if (locks++ === 0) {
-      previousOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
+      alreadyLocked = document.body.classList.contains("overflow-hidden");
+      document.body.classList.add("overflow-hidden");
     }
     const controls = () =>
       Array.from(
@@ -40,13 +40,15 @@ export function useModalFocus(
       }
       if (
         event.shiftKey &&
-        (document.activeElement === first || !element.contains(document.activeElement))
+        (document.activeElement === first ||
+          !element.contains(document.activeElement))
       ) {
         event.preventDefault();
         last.focus();
       } else if (
         !event.shiftKey &&
-        (document.activeElement === last || !element.contains(document.activeElement))
+        (document.activeElement === last ||
+          !element.contains(document.activeElement))
       ) {
         event.preventDefault();
         first.focus();
@@ -55,7 +57,8 @@ export function useModalFocus(
     document.addEventListener("keydown", keydown);
     return () => {
       document.removeEventListener("keydown", keydown);
-      if (--locks === 0) document.body.style.overflow = previousOverflow;
+      if (--locks === 0 && !alreadyLocked)
+        document.body.classList.remove("overflow-hidden");
       if (previousFocus instanceof HTMLElement && previousFocus.isConnected)
         previousFocus.focus({ preventScroll: true });
     };

@@ -13,7 +13,14 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { CircleMarker, MapContainer, Marker, Polyline, Popup, TileLayer } from "react-leaflet";
+import {
+  CircleMarker,
+  MapContainer,
+  Marker,
+  Polyline,
+  Popup,
+  TileLayer,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useNavigate, useSearchParams } from "react-router";
 import { NigeriaMapLayers } from "../components/NigeriaMapLayers";
@@ -268,14 +275,22 @@ function vehicleIcon(vehicle: Vehicle, selected: boolean) {
         : "bg-blue-600 ring-blue-200";
   const selectionClasses = selected ? "scale-125 ring-4" : "ring-2";
   return L.divIcon({
-    className: "bg-transparent! border-0!",
+    className: "bg-transparent border-0",
     html: `<div class="grid size-8 place-items-center rounded-full border-2 border-white text-white shadow-md transition duration-200 ${markerClasses} ${selectionClasses}">${renderToStaticMarkup(<Truck aria-hidden="true" className="size-4" strokeWidth={1.8} />)}</div>`,
     iconSize: [32, 32],
     iconAnchor: [16, 16],
   });
 }
 
-type MiniIconType = "search" | "truck" | "clock" | "route" | "alert" | "map" | "close" | "target";
+type MiniIconType =
+  | "search"
+  | "truck"
+  | "clock"
+  | "route"
+  | "alert"
+  | "map"
+  | "close"
+  | "target";
 function MiniIcon({ type }: { type: MiniIconType }) {
   const icons: Record<MiniIconType, LucideIcon> = {
     search: Search,
@@ -288,7 +303,13 @@ function MiniIcon({ type }: { type: MiniIconType }) {
     target: Crosshair,
   };
   const Component = icons[type];
-  return <Component aria-hidden="true" className="size-4 shrink-0" strokeWidth={1.8} />;
+  return (
+    <Component
+      aria-hidden="true"
+      className="size-4 shrink-0"
+      strokeWidth={1.8}
+    />
+  );
 }
 
 export default function MovementMap() {
@@ -342,7 +363,9 @@ export default function MovementMap() {
           <span className="text-blue-600">Operations</span>
           <span aria-hidden="true">·</span> Nigeria
         </p>
-        <h1 className="mt-2! text-2xl! font-bold! leading-tight! tracking-tight!">Movement map</h1>
+        <h1 className="mt-2 mb-1 text-2xl font-bold tracking-tight leading-tight">
+          Movement map
+        </h1>
         <p className="mt-1 text-sm text-slate-500">
           Monitor vehicle positions and telemetry across Nigeria.
         </p>
@@ -357,7 +380,7 @@ export default function MovementMap() {
           <button
             type="button"
             onClick={() => setSelected(null)}
-            className="ml-2 font-semibold underline"
+            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 ml-2 font-semibold underline"
           >
             View all vehicles
           </button>
@@ -400,8 +423,12 @@ export default function MovementMap() {
               <MiniIcon type={metric.icon as MiniIconType} />
             </span>
             <p className="m-0 min-w-0">
-              <strong className="block text-base text-slate-700">{metric.value}</strong>
-              <span className="block text-xs text-slate-500">{metric.label}</span>
+              <strong className="block text-base text-slate-700">
+                {metric.value}
+              </strong>
+              <span className="block text-xs text-slate-500">
+                {metric.label}
+              </span>
             </p>
           </div>
         ))}
@@ -427,7 +454,7 @@ export default function MovementMap() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search vehicle or delivery"
-              className="w-full border-0 bg-transparent text-xs text-slate-700 outline-none"
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 w-full border-0 bg-transparent text-xs text-slate-700 outline-none"
             />
           </label>
           <select
@@ -437,7 +464,7 @@ export default function MovementMap() {
               setSelected(null);
               setZone(e.target.value as MapZone);
             }}
-            className="h-9 min-w-0 flex-1 rounded-md border border-slate-300 bg-white px-2 text-xs font-semibold text-slate-600 md:flex-none"
+            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 h-9 min-w-0 flex-1 rounded-md border border-slate-300 bg-white px-2 text-xs font-semibold text-slate-600 md:flex-none"
           >
             <option>All zones</option>
             {hubs.map((hub) => (
@@ -448,7 +475,7 @@ export default function MovementMap() {
             aria-label="Telemetry freshness"
             value={freshness}
             onChange={(e) => setFreshness(e.target.value)}
-            className="h-9 min-w-0 flex-1 rounded-md border border-slate-300 bg-white px-2 text-xs font-semibold text-slate-600 md:flex-none"
+            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 h-9 min-w-0 flex-1 rounded-md border border-slate-300 bg-white px-2 text-xs font-semibold text-slate-600 md:flex-none"
           >
             <option>All telemetry</option>
             <option>Fresh</option>
@@ -461,7 +488,7 @@ export default function MovementMap() {
               type="checkbox"
               checked={showRoutes}
               onChange={(e) => setShowRoutes(e.target.checked)}
-              className="peer sr-only"
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 peer sr-only"
             />
             <span className="flex h-5 w-9 items-center rounded-full bg-slate-300 p-1 transition-colors peer-checked:justify-end peer-checked:bg-blue-600 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-blue-500">
               <span className="size-3 rounded-full bg-white" />
@@ -471,7 +498,9 @@ export default function MovementMap() {
           <div className="ml-auto hidden items-center gap-3 text-xs text-slate-500 xl:flex">
             {(["Fresh", "Delayed", "Stale"] as const).map((status) => (
               <span key={status} className="flex items-center gap-1">
-                <i className={`size-2 rounded-full ${freshnessStyles[status].dot}`} />
+                <i
+                  className={`size-2 rounded-full ${freshnessStyles[status].dot}`}
+                />
                 {status}
               </span>
             ))}
@@ -481,7 +510,7 @@ export default function MovementMap() {
         <div className="flex h-auto flex-col md:h-144 md:flex-row">
           <div className="relative h-96 min-w-0 flex-none bg-slate-200 md:h-full md:flex-1">
             <MapContainer
-              className="z-0! h-full! w-full!"
+              className="z-0 h-full w-full"
               bounds={nigeriaBounds}
               boundsOptions={{ padding: [12, 12] }}
               maxBounds={nigeriaNavigationBounds}
@@ -554,7 +583,9 @@ export default function MovementMap() {
                       positions={route}
                       pathOptions={{
                         color:
-                          id === "VEH-011" ? "var(--color-amber-600)" : "var(--color-blue-600)",
+                          id === "VEH-011"
+                            ? "var(--color-amber-600)"
+                            : "var(--color-blue-600)",
                         weight: 3,
                         opacity: selected ? 0.15 : 0.35,
                         dashArray: "8 7",
@@ -598,7 +629,7 @@ export default function MovementMap() {
               </div>
               <button
                 aria-label="More vehicle options"
-                className="border-0 bg-transparent text-slate-500"
+                className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 border-0 bg-transparent text-slate-500"
               >
                 •••
               </button>
@@ -616,7 +647,7 @@ export default function MovementMap() {
                 <button
                   type="button"
                   onClick={() => setDetailsOpen(true)}
-                  className="mt-2 font-semibold underline"
+                  className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 mt-2 font-semibold underline"
                 >
                   Vehicle details
                 </button>
@@ -627,7 +658,7 @@ export default function MovementMap() {
                 <button
                   key={v.id}
                   onClick={() => setSelected(v)}
-                  className={`flex min-h-20 w-full items-center gap-2 border-0 border-b border-solid border-slate-100 p-3 text-left hover:bg-slate-50 ${selected?.id === v.id ? "bg-blue-50" : "bg-white"}`}
+                  className={["focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11", `flex min-h-20 w-full items-center gap-2 border-0 border-b border-solid border-slate-100 p-3 text-left hover:bg-slate-50 ${selected?.id === v.id ? "bg-blue-50" : "bg-white"}`].filter(Boolean).join(" ")}
                 >
                   <span
                     className={`grid size-8 shrink-0 place-items-center rounded-lg ${freshnessStyles[v.freshness].className}`}
@@ -668,7 +699,7 @@ export default function MovementMap() {
       {selected && detailsOpen && (
         <aside
           aria-label="Vehicle details"
-          className="fixed! right-4! top-20! z-20! w-80! max-h-4/5! overflow-y-auto! rounded-lg! border! border-slate-300! bg-white! shadow-xl! max-md:inset-x-3! max-md:bottom-3! max-md:top-auto! max-md:w-auto!"
+          className="fixed right-4 top-20 z-20 w-80 max-h-4/5 overflow-y-auto rounded-lg border border-slate-300 bg-white shadow-xl max-md:inset-x-3 max-md:bottom-3 max-md:top-auto max-md:w-auto"
         >
           <div className="flex justify-between border-b border-slate-200 p-4">
             <div>
@@ -685,7 +716,7 @@ export default function MovementMap() {
             <button
               onClick={() => setDetailsOpen(false)}
               aria-label="Close vehicle details"
-              className="grid size-8 place-items-center rounded-md border border-slate-200 bg-white text-slate-500"
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 grid size-8 place-items-center rounded-md border border-slate-200 bg-white text-slate-500"
             >
               <MiniIcon type="close" />
             </button>
@@ -694,7 +725,9 @@ export default function MovementMap() {
             className={`flex items-center justify-between gap-2 px-4 py-2 text-xs ${freshnessStyles[selected.freshness].className}`}
           >
             <span className="flex items-center gap-1 font-bold">
-              <i className={`size-2 rounded-full ${freshnessStyles[selected.freshness].dot}`} />
+              <i
+                className={`size-2 rounded-full ${freshnessStyles[selected.freshness].dot}`}
+              />
               {selected.freshness} telemetry
             </span>
             <strong>{selected.age}</strong>
@@ -706,9 +739,12 @@ export default function MovementMap() {
                   <MiniIcon type="target" />
                 </span>
                 <div>
-                  <span className="block text-xs text-slate-400">Last-known position</span>
+                  <span className="block text-xs text-slate-400">
+                    Last-known position
+                  </span>
                   <strong className="block text-xs text-slate-600">
-                    {selected.position[0].toFixed(4)}° N, {selected.position[1].toFixed(4)}° E
+                    {selected.position[0].toFixed(4)}° N,{" "}
+                    {selected.position[1].toFixed(4)}° E
                   </strong>
                 </div>
               </div>
@@ -721,7 +757,9 @@ export default function MovementMap() {
                 ].map(([label, value]) => (
                   <div key={label}>
                     <dt className="mb-1 text-slate-400">{label}</dt>
-                    <dd className="m-0 font-semibold text-slate-600">{value}</dd>
+                    <dd className="m-0 font-semibold text-slate-600">
+                      {value}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -731,14 +769,19 @@ export default function MovementMap() {
               <div className="flex justify-center">
                 <MiniIcon type="alert" />
               </div>
-              <strong className="mt-2 block text-xs text-slate-600">Position unavailable</strong>
+              <strong className="mt-2 block text-xs text-slate-600">
+                Position unavailable
+              </strong>
               <p className="m-0 mt-1 text-xs leading-normal">
-                No telemetry has been received. The map does not display a guessed location.
+                No telemetry has been received. The map does not display a
+                guessed location.
               </p>
             </div>
           )}
           <section className="border-b border-slate-200 p-4 text-xs">
-            <h3 className="m-0 mb-3 text-sm font-bold text-slate-700">Active delivery</h3>
+            <h3 className="m-0 mb-3 text-sm font-bold text-slate-700">
+              Active delivery
+            </h3>
             <dl className="m-0 space-y-2">
               {[
                 ["Destination", selected.destination],
@@ -773,13 +816,13 @@ export default function MovementMap() {
           <div className="flex gap-2 px-4 pb-4">
             <button
               onClick={() => navigate(buildRoute(ROUTES.DELIVERIES))}
-              className="flex-1 rounded-md border border-blue-600 bg-blue-600 px-2 py-2 text-xs font-bold text-white"
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 flex-1 rounded-md border border-blue-600 bg-blue-600 px-2 py-2 text-xs font-bold text-white"
             >
               View delivery record
             </button>
             <button
               onClick={() => navigate(buildRoute(ROUTES.DELIVERIES))}
-              className="flex flex-1 items-center justify-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-2 text-xs font-bold text-slate-600"
+              className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 flex flex-1 items-center justify-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-2 text-xs font-bold text-slate-600"
             >
               <MiniIcon type="route" />
               Journey events

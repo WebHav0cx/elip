@@ -21,7 +21,8 @@ export function LiveLocation({ onLocate }: { onLocate(): void }) {
 
   useEffect(
     () => () => {
-      if (watch.current !== null) navigator.geolocation.clearWatch(watch.current);
+      if (watch.current !== null)
+        navigator.geolocation.clearWatch(watch.current);
     },
     [],
   );
@@ -49,7 +50,9 @@ export function LiveLocation({ onLocate }: { onLocate(): void }) {
           return;
         }
         setLocation({ position, accuracy: coords.accuracy });
-        setMessage(`Live location · accuracy ±${Math.round(coords.accuracy)} m`);
+        setMessage(
+          `Live location · accuracy ±${Math.round(coords.accuracy)} m`,
+        );
         if (firstFix) {
           map.stop();
           map.setView(position, Math.max(map.getZoom(), 14));
@@ -77,7 +80,7 @@ export function LiveLocation({ onLocate }: { onLocate(): void }) {
   return (
     <>
       <div
-        className="absolute! bottom-14! left-3! right-3! z-800! grid! w-fit! gap-1.5! rounded-lg! border! border-slate-200! bg-white! p-2.5! shadow-md!"
+        className="absolute bottom-14 left-3 right-3 z-800 grid w-fit gap-1.5 rounded-lg border border-slate-200 bg-white p-2.5 shadow-md"
         ref={(element) => {
           if (element) {
             L.DomEvent.disableClickPropagation(element);
@@ -89,27 +92,37 @@ export function LiveLocation({ onLocate }: { onLocate(): void }) {
           type="button"
           aria-pressed={tracking}
           onClick={locate}
-          className="rounded-sm! border! border-slate-200! bg-white! px-2.5! py-1.5! text-xs! font-semibold! text-blue-600!"
+          className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 rounded-sm border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-blue-600"
         >
           {tracking ? "Stop location tracking" : "My location"}
         </button>
         {message && (
-          <p role="status" className="m-0! max-w-64! text-xs! text-slate-600!">
+          <p role="status" className="m-0 max-w-64 text-xs text-slate-600">
             {message}
           </p>
         )}
       </div>
       {location && (
-        <Pane name="live-location" className="z-650!">
+        <Pane name="live-location" className="z-650">
           <Circle
             center={location.position}
             radius={location.accuracy}
-            pathOptions={{ color: "#2563eb", weight: 1, fillOpacity: 0.1, interactive: false }}
+            pathOptions={{
+              color: "#2563eb",
+              weight: 1,
+              fillOpacity: 0.1,
+              interactive: false,
+            }}
           />
           <CircleMarker
             center={location.position}
             radius={8}
-            pathOptions={{ color: "#ffffff", weight: 3, fillColor: "#2563eb", fillOpacity: 1 }}
+            pathOptions={{
+              color: "#ffffff",
+              weight: 3,
+              fillColor: "#2563eb",
+              fillOpacity: 1,
+            }}
           >
             <Popup>
               Your live location

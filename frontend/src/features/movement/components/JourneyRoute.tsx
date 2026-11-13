@@ -1,7 +1,11 @@
 import L from "leaflet";
 import { useEffect, useState } from "react";
 import { CircleMarker, Pane, Polyline, Tooltip, useMap } from "react-leaflet";
-import { getRoadRoute, type MapPoint, type RoadRoute } from "../services/roadRoute";
+import {
+  getRoadRoute,
+  type MapPoint,
+  type RoadRoute,
+} from "../services/roadRoute";
 
 type RouteResult = { points: MapPoint[]; route?: RoadRoute; failed?: boolean };
 
@@ -52,7 +56,8 @@ export function JourneyRoute({
       if (view === "street") {
         const vehicle = L.latLng(position);
         const nearest = path.reduce(
-          (best, point) => (vehicle.distanceTo(point) < vehicle.distanceTo(best) ? point : best),
+          (best, point) =>
+            vehicle.distanceTo(point) < vehicle.distanceTo(best) ? point : best,
           path[0],
         );
         map.fitBounds(L.latLngBounds([position, nearest]), {
@@ -76,10 +81,15 @@ export function JourneyRoute({
   return (
     <>
       {visible && (
-        <Pane name="selected-journey" className="z-460!">
+        <Pane name="selected-journey" className="z-460">
           <Polyline
             positions={path}
-            pathOptions={{ color: "#ffffff", weight: 10, opacity: 1, interactive: false }}
+            pathOptions={{
+              color: "#ffffff",
+              weight: 10,
+              opacity: 1,
+              interactive: false,
+            }}
           />
           <Polyline
             positions={path}
@@ -95,21 +105,31 @@ export function JourneyRoute({
           <CircleMarker
             center={path[0]}
             radius={6}
-            pathOptions={{ color: "#ffffff", weight: 2, fillColor: "#16a34a", fillOpacity: 1 }}
+            pathOptions={{
+              color: "#ffffff",
+              weight: 2,
+              fillColor: "#16a34a",
+              fillOpacity: 1,
+            }}
           >
             <Tooltip>Journey start</Tooltip>
           </CircleMarker>
           <CircleMarker
             center={path[path.length - 1]}
             radius={6}
-            pathOptions={{ color: "#ffffff", weight: 2, fillColor: "#dc2626", fillOpacity: 1 }}
+            pathOptions={{
+              color: "#ffffff",
+              weight: 2,
+              fillColor: "#dc2626",
+              fillOpacity: 1,
+            }}
           >
             <Tooltip>Last route waypoint</Tooltip>
           </CircleMarker>
         </Pane>
       )}
       <div
-        className="absolute! right-3! top-20! z-800! grid! max-w-48! gap-2! rounded-lg! border! border-slate-200! bg-white! p-3! shadow-md!"
+        className="absolute right-3 top-20 z-800 grid max-w-48 gap-2 rounded-lg border border-slate-200 bg-white p-3 shadow-md"
         ref={(element) => {
           if (element) {
             L.DomEvent.disableClickPropagation(element);
@@ -117,7 +137,7 @@ export function JourneyRoute({
           }
         }}
       >
-        <p role="status" className="m-0! text-xs! text-slate-600!">
+        <p role="status" className="m-0 text-xs text-slate-600">
           {current?.route
             ? `Road route · ${(current.route.distance / 1000).toFixed(1)} km`
             : current?.failed
@@ -129,7 +149,7 @@ export function JourneyRoute({
             type="button"
             key={mode}
             aria-pressed={view === mode}
-            className="rounded-md! border! border-slate-200! bg-white! px-2! py-2! text-xs! font-semibold! text-blue-600!"
+            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 cursor-pointer max-lg:min-h-11 max-lg:min-w-11 rounded-md border border-slate-200 bg-white px-2 py-2 text-xs font-semibold text-blue-600"
             onClick={() => {
               setView(mode);
               setFocusRequest((value) => value + 1);
