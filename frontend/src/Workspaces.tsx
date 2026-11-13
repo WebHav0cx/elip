@@ -47,9 +47,6 @@ function PageHead({
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">
-          Demo Operation · data
-        </p>
         <h1 className="mt-2 mb-1 text-2xl font-semibold tracking-tight text-slate-900">
           {title}
         </h1>
@@ -1482,7 +1479,7 @@ export function SettingsPage({
             <>
               <SectionHead
                 title="Profile"
-                description="Signed-in demonstration account information."
+                description="Your account information."
               />
               <div className="mt-5 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
                 <Info label="Full Name" value={currentUser.name} />
@@ -1490,10 +1487,6 @@ export function SettingsPage({
                 <Info label="Assigned Role" value={currentUser.role} />
                 <Info label="Account Status" value={currentUser.status} />
               </div>
-              <p className="mt-5 rounded-md bg-slate-50 p-3 text-xs text-slate-500">
-                Profile editing is read-only until the corresponding backend
-                contract is available.
-              </p>
             </>
           )}
           {section === "Preferences" && (

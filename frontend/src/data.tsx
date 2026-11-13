@@ -137,7 +137,7 @@ export type Notification = {
 
 const operation: Operation = {
   id: "SIM-2026-001",
-  name: "Demo Operation",
+  name: "SIM-2026-001",
   start: "2026-12-03T07:00",
   end: "2026-12-03T18:00",
   status: "RUNNING",

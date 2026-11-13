@@ -1280,7 +1280,6 @@ function App() {
       document.removeEventListener("keydown", dismissNotifications);
     };
   }, []);
-  const [operation, setOperation] = useState("Demo Operation");
   const [query, setQuery] = useState("");
   const [reviewed, setReviewed] = useState<string[]>([]);
   const {
@@ -1473,19 +1472,6 @@ function App() {
                   risks.
                 </p>
               </div>
-              <label className="w-47 max-sm:w-full">
-                <span className="block mb-1.25 text-slate-400 text-xs max-lg:text-xs font-semibold">
-                  Selected operation
-                </span>
-                <select
-                  className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 max-w-full max-lg:text-base max-lg:min-h-11 w-full h-9.5 pr-8 pl-2.75 rounded-lg text-slate-700 outline-none bg-white text-xs font-semibold border border-slate-300 py-0"
-                  value={operation}
-                  onChange={(e) => setOperation(e.target.value)}
-                >
-                  <option>Demo Operation</option>
-                  <option>Readiness Exercise 02</option>
-                </select>
-              </label>
             </div>
 
             <div className="min-h-9.5 mt-6 mb-3.75 flex items-center justify-between rounded-lg bg-teal-50 text-slate-600 text-xs max-lg:text-xs border border-emerald-100 py-2 px-3.25 mx-0">
