@@ -8,7 +8,7 @@ Monorepo for the Election Logistics Intelligence Platform.
 backend/        FastAPI application, database models and migrations
 simulation/     Synthetic operations, scenarios and replay engine
 ml/             Predictive modelling, evaluation and packaging
-src/            React, TypeScript and Vite dashboard
+frontend/       React, TypeScript and Vite dashboard
 infra/          Infrastructure documentation and deployment assets
 ```
 
@@ -44,7 +44,7 @@ Other useful commands are `npm run build`, `npm run lint` and `npm run preview`.
 The dashboard is built with React, TypeScript, Vite and Tailwind CSS. Vercel configuration
 lives in `vercel.json`; static hosts must provide an SPA fallback to `index.html`.
 
-Application URL patterns live in `src/routes.ts`, and `src/app/router.ts` configures the
+Application URL patterns live in `frontend/src/routes.ts`, and `frontend/src/app/router.ts` configures the
 browser router. API calls remain in feature service modules.
 
 ## Configuration
