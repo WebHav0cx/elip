@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     app_name: str = "Electoral Logistics API"
     app_env: str = "development"
     log_level: str = "info"
+    cors_origins: str = "http://localhost:5173"
     database_url: str
     jwt_secret: str = "development-only-change-this-secret"
     model_artifact_dir: str = "/models"

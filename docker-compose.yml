@@ -6,6 +6,7 @@ services:
       APP_NAME: ${APP_NAME:-Election API}
       APP_ENV: ${APP_ENV:-development}
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
       DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://election:change-me@db:5432/election}
       JWT_SECRET: ${JWT_SECRET:-development-only-change-this-secret}
       MODEL_ARTIFACT_DIR: /models/artifacts

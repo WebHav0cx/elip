@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -33,6 +34,19 @@ from app.features.predictions.router import router as predictions_router
 logging.basicConfig(level=settings.log_level.upper())
 
 
+def _cors_origins() -> list[str]:
+    origins = [
+        origin.strip().rstrip("/")
+        for origin in settings.cors_origins.split(",")
+        if origin.strip()
+    ]
+    if not origins:
+        raise RuntimeError("CORS_ORIGINS must contain at least one origin")
+    if "*" in origins:
+        raise RuntimeError("Wildcard CORS origins are not permitted")
+    return origins
+
+
 class RequestIDMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         request_id = request.headers.get("X-Request-ID", str(uuid4()))
@@ -45,6 +59,15 @@ class RequestIDMiddleware(BaseHTTPMiddleware):
 app = FastAPI(
     title=settings.app_name,
     version="0.1.0",
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cors_origins(),
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Accept", "Authorization", "Content-Type", "X-Request-ID"],
+    expose_headers=["X-Request-ID"],
+    max_age=600,
 )
 app.add_middleware(RequestIDMiddleware)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)

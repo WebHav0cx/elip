@@ -36,3 +36,29 @@ def test_unknown_route_uses_error_envelope() -> None:
     assert response.status_code == 404
     assert response.json()["error"]["code"] == "RESOURCE_NOT_FOUND"
     assert response.json()["meta"]["request_id"] == "req-404"
+def test_cors_allows_configured_frontend_origin() -> None:
+    response = client.options(
+        "/api/v1/auth/login",
+        headers={
+            "Origin": "http://localhost:5173",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "authorization,content-type",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "http://localhost:5173"
+    assert "POST" in response.headers["access-control-allow-methods"]
+
+
+def test_cors_rejects_unconfigured_origin() -> None:
+    response = client.options(
+        "/api/v1/auth/login",
+        headers={
+            "Origin": "https://malicious.example",
+            "Access-Control-Request-Method": "POST",
+        },
+    )
+
+    assert response.status_code == 400
+    assert "access-control-allow-origin" not in response.headers
